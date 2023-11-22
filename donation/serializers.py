@@ -4,10 +4,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'is_donor', 'is_hospital']
 
+    def get_id(self, obj):
+        return obj.id
 
 class UserSerializerToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
