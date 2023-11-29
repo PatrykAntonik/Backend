@@ -31,7 +31,12 @@ def registerUser(request):
         user = User.objects.create(
             username=data['email'],
             email=data['email'],
-            password=make_password(data['password'])
+            password=make_password(data['password']),
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            city=data['city'],
+            zip_code=data['zip_code'],
+            phone_number=data['phone_number'],
         )
         serializer = UserSerializerToken(user, many=False)
         return Response(serializer.data)

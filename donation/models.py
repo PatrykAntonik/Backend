@@ -7,15 +7,14 @@ from django.utils import timezone
 class User(AbstractUser):
     is_donor = models.BooleanField(default=False)
     is_hospital = models.BooleanField(default=False)
+    city = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    phone_number = PhoneField(unique=True)
 
 # DONOR USER MODEL AND DETAILS
 class Donor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    phone_number = PhoneField(unique=True)
-    zip_code = models.CharField(max_length=20, blank=True)
-    city = models.CharField(max_length=255)
     blood_type = models.CharField(max_length=50, blank=True)
-    health_condition = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
@@ -38,11 +37,8 @@ class Donation(models.Model):
 # HOSPITAL USER MODEL AND DETAILS
 class Hospital(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    hospital_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    zip_code = models.CharField(max_length=20, blank=True)
-    phone_number = PhoneField(unique=True)
+    hospital_name = models.CharField(max_length=255)
     website_url = models.URLField(blank=True)
 
     def __str__(self):
