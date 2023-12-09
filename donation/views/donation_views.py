@@ -6,7 +6,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -19,7 +18,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-# DONATIONS
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 def getDonations(request):
@@ -36,7 +34,20 @@ def getDonation(request, pk):
 
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def getDonors(request):
-    donors = Donor.objects.all()
-    serializer = DonorSerializer(donors, many=True)
+def getQuestions(request):
+    questions = Question.objects.all()
+    serializer = QuestionSerializer(questions, many=True)
     return Response(serializer.data)
+
+# @api_view(['POST'])
+# # @permission_classes([IsAuthenticated])
+# def createDonation(request):
+#     data = request.data
+#     user = request.user
+#     donation = Donation.objects.create(
+#         donor=user,
+#         donation_type=data['donation_type']
+#     )
+#     serializer = DonationSerializer(donation, many=False)
+#     return Response(serializer.data)
+
