@@ -6,6 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -18,22 +19,33 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def getDonations(request):
     donations = Donation.objects.all()
     serializer = DonationSerializer(donations, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def getDonation(request, pk):
     donation = Donation.objects.get(id=pk)
     serializer = DonationSerializer(donation, many=False)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
+def getMyDonations(request):
+    user = request.user
+    donations = user.donation_set.all()
+    serializer = DonationSerializer(donations, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def getQuestions(request):
     questions = Question.objects.all()
     serializer = QuestionSerializer(questions, many=True)
@@ -50,4 +62,3 @@ def getQuestions(request):
 #     )
 #     serializer = DonationSerializer(donation, many=False)
 #     return Response(serializer.data)
-

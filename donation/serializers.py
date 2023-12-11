@@ -45,7 +45,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AnswerSerializer(serializers.ModelSerializer):
+class ResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DonationResponse
         fields = '__all__'
