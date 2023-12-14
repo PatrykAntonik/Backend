@@ -81,67 +81,14 @@ def getMyResponses(request):
 
 
 @api_view(['GET'])
-def getResponses(request):
-    responses = DonationResponse.objects.all()
-    serializer = ResponseSerializer(responses, many=True)
-    return Response(serializer.data)
-
-
-def createResponses(request):
-    data = request.data
-    user = request.user
-    if 'responses' not in data:
-        return Response({'detail': 'Missing answers'}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        donation = Donation.objects.create(
-            donor=user,
-            donation_type=data['donation_type']
-        )
-        serializer = DonationSerializer(donation, many=False)
-        return Response(serializer.data)
-    except Exception as e:
-        return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def createDonationResponse(request):
-    # Get the data from the request
-    data = request.data
-    user = request.user
-
-    # Validate the required fields
-    if 'donation_id' not in data or 'responses' not in data:
-        return Response({'detail': 'Missing donation ID or responses'}, status=status.HTTP_400_BAD_REQUEST)
-
+def getDonationResponses(request, donation_id):
     try:
-        # Check if the donation exists and belongs to the user
-        donation = Donation.objects.get(id=data['donation_id'], donor=user)
-        responses = data['responses']
-
-        # Create responses for each question
-        for response in responses:
-            question_id = response.get('question_id')
-            answer = response.get('answer', False)
-
-            # Validate question ID
-            if not Question.objects.filter(id=question_id).exists():
-                return Response({'detail': f'Question with id {question_id} does not exist'},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-            # Create or update the response
-            DonationResponse.objects.update_or_create(
-                donation=donation,
-                question_id=question_id,
-                defaults={'answer': answer}
-            )
-
-        return Response({'detail': 'Responses added successfully'})
-
-    except Donation.DoesNotExist:
-        return Response({'detail': 'Donation not found'}, status=status.HTTP_404_NOT_FOUND)
-    except Exception as e:
-        return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        responses = DonationResponse.objects.filter(donation_id=donation_id)
+        serializer = ResponseSerializer(responses, many=True)
+        return Response(serializer.data)
+    except DonationResponse.DoesNotExist:
+        return Response({'detail': 'This donation has no responses'}, status=404)
 
 
 @api_view(['POST'])
@@ -149,15 +96,28 @@ def createDonationResponse(request):
 def createDonation(request):
     data = request.data
     user = request.user
-    if 'donation_type' not in data:
-        return Response({'detail': 'Missing donation type'}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         donation = Donation.objects.create(
             donor=user,
             donation_type=data['donation_type']
         )
-        serializer = DonationSerializer(donation, many=False)
+
+        responses = data.get('responses', [])
+        for response in responses:
+            question_id = response.get('question_id')
+            answer = response.get('answer', False)
+
+            if Question.objects.filter(id=question_id).exists():
+                DonationResponse.objects.create(
+                    donation=donation,
+                    question_id=question_id,
+                    answer=answer
+                )
+
+        serializer = DonationSerializer(donation)
         return Response(serializer.data)
+
     except Exception as e:
         return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
