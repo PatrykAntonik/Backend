@@ -68,21 +68,27 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+#### Start the React server:
+
+```bash
+cd frontend
+npm start
+```
+
 #### Add a superuser:
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### Dependencies
+### User examples
+#### Donor:
+- email: przyklad@user.pl
+- password: 123456
 
-#### React Dependencies
-
-Refer to frontend/package.json for a complete list.
-
-#### Django Dependencies
-
-Refer to requirements.txt for a complete list.
+#### Hospital:
+- email: szpital@hospital.com.pl
+- password: 123456
 
 ### License
 
