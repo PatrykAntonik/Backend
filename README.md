@@ -17,7 +17,8 @@ for donors, hospitals, and administrators.
 
 Python (>= 3.8)
 Node.js (>= 14)
-npm (comes with Node.js)
+npm (comes with Node.js),
+yarn (>= 1.22.5)
 
 ### Setup
 
