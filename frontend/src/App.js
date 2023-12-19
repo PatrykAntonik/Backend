@@ -19,23 +19,21 @@ import backgroundImage from './static/background.webp';
 import Box from "@mui/material/Box";
 
 function App() {
-    // useEffect(() => {
-    //     document.body.style.backgroundImage = `url('${backgroundImage}')`;
-    //     document.body.style.backgroundSize = 'cover';
-    //     document.body.style.backgroundPosition = 'center';
-    //     document.body.style.backgroundRepeat = 'no-repeat';
-    //     document.body.style.backgroundAttachment = 'fixed';
-    //
-    //     return () => {
-    //         document.body.style.background = null;
-    //     };
-    // }, []);
+    useEffect(() => {
+        document.body.style.backgroundImage = `url('${backgroundImage}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'fixed';
+
+        return () => {
+            document.body.style.background = null;
+        };
+    }, []);
     return (
 
         <BrowserRouter>
             <Header/>
-            <div style={{backgroundImage: ''}}>
-
                 <Container>
                     <Routes>
                         <Route path='' element={<HomePage/>}/>
@@ -75,8 +73,6 @@ function App() {
                         }/>
                     </Routes>
                 </Container>
-            </div>
-
             {/*<Footer/>*/}
         </BrowserRouter>
     );
