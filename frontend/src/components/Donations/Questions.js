@@ -55,7 +55,7 @@ function Questions() {
                                             <ListItemIcon>
                                                 <QuestionMarkIcon/>
                                             </ListItemIcon>
-                                            <ListItemText sx={{textAlign: 'center'}} primary={`${question.text}`}/>
+                                            <ListItemText sx={{textAlign: 'left', marginLeft:'50px'}} primary={`${question.text}`}/>
                                         </ListItemButton>
                                     </ListItem>
                                     <Divider/>

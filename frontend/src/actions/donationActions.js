@@ -12,15 +12,12 @@ import {
     QUESTION_REQUEST,
     QUESTION_SUCCESS,
     QUESTION_FAIL,
-    RESPONSE_LIST_REQUEST,
-    RESPONSE_LIST_SUCCESS,
-    RESPONSE_LIST_FAIL,
     DONATION_CREATE_REQUEST,
     DONATION_CREATE_SUCCESS,
     DONATION_CREATE_FAIL,
-    RESPONSE_CREATE_REQUEST,
-    RESPONSE_CREATE_SUCCESS,
-    RESPONSE_CREATE_FAIL,
+
+
+
 
 } from "../constants/donationConstants";
 
@@ -178,6 +175,32 @@ export const createDonationWithResponses = (donationData) => async (dispatch, ge
     }
 };
 
+export const deleteDonation = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: 'DONATION_DELETE_REQUEST' });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.delete(`/api/donations/${id}/delete/`, config);
+
+        dispatch({ type: 'DONATION_DELETE_SUCCESS' });
+    } catch (error) {
+        dispatch({
+            type: 'DONATION_DELETE_FAIL',
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        });
+    }
+};
 
 
 

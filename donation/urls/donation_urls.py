@@ -9,6 +9,6 @@ urlpatterns = [
     path('<int:donation_id>/responses/', getDonationResponses, name='donation-responses'),
     path('mydonations/', getMyDonations, name='mydonations'),
     path('create/', createDonation, name='create-donation'),
-    path('<int:pk>/delete', deleteDonation, name='delete-donation'),
+    path('<int:pk>/delete/', deleteDonation, name='delete-donation'),
     path('<str:pk>/', getDonation, name="donation"),
 ]

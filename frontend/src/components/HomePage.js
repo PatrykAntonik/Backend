@@ -1,31 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
-    Box, Typography, Container, Paper, Grid, Button, Accordion,
-    AccordionSummary, AccordionDetails
+    Box, Typography, Paper, Button, Accordion,
+    AccordionSummary, AccordionDetails, CssBaseline
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Link} from "react-router-dom";
+import backgroundImage from '../static/background.webp';
 
 function HomePage() {
+    useEffect(() => {
+        document.body.style.backgroundImage = `url('${backgroundImage}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'fixed';
+
+        return () => {
+            document.body.style.background = null;
+        };
+    }, []);
+
     return (
-        <Container maxWidth="lg">
-            <Box sx={{my: 4}}>
-                <Typography variant="h2" component="h1" gutterBottom>
+        <CssBaseline>
+            <Box sx={{my: 4, position: 'relative', zIndex: 1}}>
+                <Typography sx={{color: 'white',fontWeight:'500'}} variant="h2" component="h1" gutterBottom>
                     Blood and Marrow Donation
                 </Typography>
-                <Typography variant="h5" gutterBottom>
+                <Typography sx={{color: 'white'}} variant="h5" gutterBottom>
                     A Lifesaving Gesture
                 </Typography>
-                <Paper elevation={3} sx={{p: 3, mt: 3}}>
-                    <Typography variant="h6" gutterBottom>
-                        Understanding Donation
-                    </Typography>
-                    <Typography paragraph>
-                        Blood and marrow donation are critical practices that can save lives. Each year, thousands of
-                        people rely on the generosity of donors to survive and combat various medical conditions.
-                    </Typography>
-                </Paper>
-                <Accordion sx={{mt: 3}}>
+
+                {/* ... Other components ... */}
+
+                <Accordion sx={{mt: 3, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1a-content"
@@ -42,7 +49,7 @@ function HomePage() {
                     </AccordionDetails>
                 </Accordion>
 
-                <Accordion>
+                <Accordion sx={{backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel2a-content"
@@ -59,20 +66,21 @@ function HomePage() {
                     </AccordionDetails>
                 </Accordion>
 
-
-                <Paper elevation={3} sx={{p: 3, mt: 3}}>
+                <Paper elevation={3}
+                       sx={{p: 3, mt: 10, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', textAlign: 'center'}}
+                >
                     <Typography variant="h6" gutterBottom>
                         Donation Questions
                     </Typography>
                     <Typography paragraph>
-                        You can see questions you will be asked during the donation process by visiting our FAQ page.
+                        You can see questions you will be asked during the donation process.
                     </Typography>
-                    <Button component={Link} to="/questions" variant="contained" color="primary">
-                        Visit Our FAQ
+                    <Button component={Link} to="/questions" variant="outlined" color="primary">
+                        Questions
                     </Button>
                 </Paper>
             </Box>
-        </Container>
+        </CssBaseline>
     );
 }
 

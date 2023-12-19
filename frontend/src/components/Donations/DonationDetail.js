@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Box, Grid, Typography, List, ListItem, ListItemText, Divider} from "@mui/material";
-import {listDonationDetails, ListQuestion, listDonationResponses} from "../../actions/donationActions";
+import {listDonationDetails, ListQuestion, listDonationResponses, deleteDonation} from "../../actions/donationActions";
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../Reusable/Message";
 import Loader from "../Reusable/Loader";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 
 
 function DonationDetail() {
@@ -25,6 +24,12 @@ function DonationDetail() {
 
     const donationResponses = useSelector(state => state.donationResponses);
     const {responses} = donationResponses;
+
+    const handleDelete = () => {
+        if (window.confirm('Are you sure you want to delete this donation?')) {
+            dispatch(deleteDonation(id));
+        }
+    };
 
     useEffect(() => {
         dispatch(listDonationDetails(id));
@@ -77,6 +82,9 @@ function DonationDetail() {
                             variant="contained"
                             color="error"
                             sx={{marginTop: '1rem'}}
+                            onClick={handleDelete}
+                            component={Link}
+                            to="/donation/mydonations"
                         >
                             Delete Donation
                         </Button>

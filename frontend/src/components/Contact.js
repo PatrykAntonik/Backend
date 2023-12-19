@@ -1,75 +1,34 @@
-import React, {useState} from 'react';
-import {Box, Container, Typography, TextField, Button, Grid} from '@mui/material';
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
 
-function ContactPage() {
-    const [contactInfo, setContactInfo] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
+function Contact() {
+    const emailAddress = "patryka2000@gmail.com";
 
-    const handleChange = (e) => {
-        setContactInfo({...contactInfo, [e.target.name]: e.target.value});
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleContactClick = () => {
+        window.location.href = `mailto:${emailAddress}?subject=Suggestion for Donation Process`;
     };
 
     return (
-        <Container maxWidth="md">
-            <Box sx={{marginTop: 4, marginBottom: 4}}>
-                <Typography variant="h4" gutterBottom>Contact Us</Typography>
-                <form onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Name"
-                                name="name"
-                                value={contactInfo.name}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Email"
-                                name="email"
-                                type="email"
-                                value={contactInfo.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Message"
-                                name="message"
-                                multiline
-                                rows={4}
-                                value={contactInfo.message}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                href={`mailto:${contactInfo.email}`}
-                                variant="outlined"
-                                color="primary"
-                                sx={{marginTop: '1rem'}}
-                            >
-                                Contact Donor
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </form>
-            </Box>
-        </Container>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            height: '100vh',
+            textAlign: 'left',
+            p: 4
+        }}>
+            <Typography variant="h4" gutterBottom>
+                Have an idea to improve the donation process?
+            </Typography>
+            <Typography variant="h6" sx={{ mb: 10, mt:4 }}>
+                If you have any ideas or feedback to make the donation process easier, like adding more questions for donors, please contact us.
+            </Typography>
+            <Button variant="contained" color="primary" onClick={handleContactClick}>
+                Send Us Your Ideas
+            </Button>
+        </Box>
     );
 }
 
-export default ContactPage;
+export default Contact;

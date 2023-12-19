@@ -7,11 +7,8 @@ import {
 
     QUESTION_REQUEST, QUESTION_SUCCESS, QUESTION_FAIL,
 
-    RESPONSE_LIST_REQUEST, RESPONSE_LIST_SUCCESS, RESPONSE_LIST_FAIL,
-
     DONATION_CREATE_REQUEST, DONATION_CREATE_SUCCESS, DONATION_CREATE_FAIL,
-
-    RESPONSE_CREATE_REQUEST, RESPONSE_CREATE_SUCCESS, RESPONSE_CREATE_FAIL,
+    DONATION_DELETE_REQUEST, DONATION_DELETE_SUCCESS, DONATION_DELETE_FAIL,
 
 } from "../constants/donationConstants";
 
@@ -123,4 +120,17 @@ export const donationCreateReducers = (state = {}, action) => {
             return state;
     }
 }
+
+export const donationDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'DONATION_DELETE_REQUEST':
+            return {loading: true};
+        case 'DONATION_DELETE_SUCCESS':
+            return {loading: false, success: true};
+        case 'DONATION_DELETE_FAIL':
+            return {loading: false, error: action.payload};
+        default:
+            return state;
+    }
+};
 

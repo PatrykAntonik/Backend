@@ -8,6 +8,7 @@ import {
     questionReducers,
     donationCreateReducers,
     donationResponsesReducer,
+    donationDeleteReducer,
 } from "./reducers/donationReducers";
 import {
     userLoginReducers,
@@ -29,6 +30,7 @@ const reducer = combineReducers({
     donationResponses: donationResponsesReducer,
     userList: userListReducers,
     donationCreate: donationCreateReducers,
+    donationDelete: donationDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ?

@@ -126,8 +126,8 @@ def createDonation(request):
 @permission_classes([IsAuthenticated])
 def deleteDonation(request, pk):
     try:
-        donation = Donation.objects.get(id=pk)
+        donation = Donation.objects.get(id=pk, donor=request.user)
         donation.delete()
-        return Response('Donation deleted successfully')
-    except Exception as e:
-        return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'Donation deleted'})
+    except Donation.DoesNotExist:
+        return Response({'detail': 'Donation not found'}, status=404)
