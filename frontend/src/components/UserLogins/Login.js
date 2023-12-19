@@ -61,6 +61,7 @@ function Login() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 5, padding: 5,
                     }}
                 >
                     <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>

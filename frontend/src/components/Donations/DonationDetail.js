@@ -31,6 +31,15 @@ function DonationDetail() {
         }
     };
 
+    const StyledListItemText = ({primary, secondary}) => (
+        <ListItemText
+            primary={primary}
+            // primaryTypographyProps={{sx: {textTransform: 'uppercase'}}}
+            secondary={secondary}
+            secondaryTypographyProps={{sx: {color: 'white', fontWeight: 'bold',textTransform: 'uppercase'}}}
+        />
+    );
+
     useEffect(() => {
         dispatch(listDonationDetails(id));
         dispatch(listDonationResponses(id));
@@ -54,18 +63,18 @@ function DonationDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <Typography variant="h6">Donor Information</Typography>
-                    <List>
+                    <List sx={{backgroundColor: 'rgba(0,0,0,0.3)', color: 'white', borderRadius: 5}}>
                         <ListItem>
-                            <ListItemText primary="First Name" secondary={donation.donor?.first_name || 'N/A'}/>
+                            <StyledListItemText primary="First Name" secondary={donation.donor?.first_name || 'N/A'}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary="Last Name" secondary={donation.donor?.last_name || 'N/A'}/>
+                            <StyledListItemText primary="Last Name" secondary={donation.donor?.last_name || 'N/A'}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary="Date" secondary={donation.date}/>
+                            <StyledListItemText primary="Date" secondary={donation.date}/>
                         </ListItem>
                         <ListItem>
-                            <ListItemText primary="Donation Type" secondary={donation.donation_type}/>
+                            <StyledListItemText primary="Donation Type" secondary={donation.donation_type}/>
                         </ListItem>
                     </List>
                     {isHospital ? (
@@ -94,12 +103,12 @@ function DonationDetail() {
                 <Grid item xs={12} md={8}>
                     <Typography variant="h6"
                     >Questions with responses</Typography>
-                    <List>
+                    <List sx={{backgroundColor: 'rgba(0,0,0,0.3)', color: 'white', borderRadius: 5}}>
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>
                                     <ListItem>
-                                        <ListItemText
+                                        <StyledListItemText
                                             primary={question.text}
                                             secondary={
                                                 <Box

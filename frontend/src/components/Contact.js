@@ -14,9 +14,8 @@ function Contact() {
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
-            height: '100vh',
             textAlign: 'left',
-            p: 4
+            p: 4,
         }}>
             <Typography variant="h4" gutterBottom>
                 Have an idea to improve the donation process?
@@ -25,7 +24,7 @@ function Contact() {
                 If you have any ideas or feedback to make the donation process easier, like adding more questions for donors, please contact us.
             </Typography>
             <Button variant="contained" color="primary" onClick={handleContactClick}>
-                Send Us Your Ideas
+                Contact Us
             </Button>
         </Box>
     );

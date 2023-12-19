@@ -63,6 +63,8 @@ function Register() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 5, padding: 5,
+
                     }}
                 >
                     <CustomTooltip title={is_hospital ? "Hospital" : "User"}>
@@ -130,7 +132,7 @@ function Register() {
                                             label="Website URL"
                                             name="website_url"
                                             autoComplete="website_url"
-                                            autoFocus value={website_url}
+                                            value={website_url}
                                             onChange={(e) => setWebsiteUrl(e.target.value)}
                                         />
                                     </Grid>
@@ -230,7 +232,6 @@ function Register() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    error={password.length < 6}
                                     helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     required
                                     fullWidth
@@ -244,7 +245,6 @@ function Register() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    error={password.length < 6}
                                     helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     required
                                     fullWidth

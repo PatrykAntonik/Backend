@@ -102,7 +102,7 @@ function UserInfo() {
                 <CssBaseline/>
                 <Box
                     sx={{
-                        marginBottom: 10, display: 'flex', flexDirection: 'column', alignItems: 'center',
+                        marginBottom: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor:'rgba(0,0,0,0.3)', borderRadius: 5, padding: 5
                     }}
                 >
                     <Typography variant="h5">

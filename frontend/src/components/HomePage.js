@@ -30,7 +30,6 @@ function HomePage() {
                     A Lifesaving Gesture
                 </Typography>
 
-                {/* ... Other components ... */}
 
                 <Accordion sx={{mt: 3, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
                     <AccordionSummary

@@ -114,7 +114,12 @@ function DonationCreateScreen() {
                 );
             case 1:
                 return (
-                    <List sx={{marginTop: '2rem', marginBottom: '5rem'}}>
+                    <List sx={{
+                        marginTop: '2rem',
+                        marginBottom: '5rem',
+                        backgroundColor: 'rgba(0,0,0,0.3)',
+                        color: 'white'
+                    }}>
                         {questions && questions.map((question, index) => (
                             <React.Fragment key={question.id}>
                                 <ListItem>
@@ -122,6 +127,7 @@ function DonationCreateScreen() {
                                     <ListItemIcon style={{minWidth: 'auto'}}>
                                         <Checkbox
                                             edge="end"
+                                            sx={{color: "white"}}
                                             checked={responses[question.id] || false}
                                             onChange={(e) => handleResponseChange(question.id, e.target.checked)}
                                         />
@@ -144,7 +150,7 @@ function DonationCreateScreen() {
                         <Box>
                             <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>Donation
                                 Type: {donationType}</Typography>
-                            <Accordion sx={{marginBottom: '1rem'}}>
+                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white'}}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"
@@ -165,7 +171,11 @@ function DonationCreateScreen() {
                                                     {question.text}
                                                 </Typography>
                                                 <Typography variant='body1'
-                                                            sx={{textAlign: 'right', fontWeight: '500', marginLeft:'50px'}}>
+                                                            sx={{
+                                                                textAlign: 'right',
+                                                                fontWeight: '500',
+                                                                marginLeft: '50px'
+                                                            }}>
                                                     {responses[question.id] ? 'Yes' : 'No'}
                                                 </Typography>
                                             </ListItem>
