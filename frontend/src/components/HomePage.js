@@ -8,17 +8,6 @@ import {Link} from "react-router-dom";
 import backgroundImage from '../static/background.webp';
 
 function HomePage() {
-    // useEffect(() => {
-    //     document.body.style.backgroundImage = `url('${backgroundImage}')`;
-    //     document.body.style.backgroundSize = 'cover';
-    //     document.body.style.backgroundPosition = 'center';
-    //     document.body.style.backgroundRepeat = 'no-repeat';
-    //     document.body.style.backgroundAttachment = 'fixed';
-    //
-    //     return () => {
-    //         document.body.style.background = null;
-    //     };
-    // }, []);
 
     return (
         <CssBaseline>
