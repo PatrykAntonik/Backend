@@ -59,18 +59,17 @@ yarn
 
 | Nr. | Dependency                        | Version  |
 |----:|-----------------------------------|----------|
-|   1 | @fontsource/roboto                | ^5.0.8   |
-|   2 | @mui/icons-material               | ^5.14.16 |
-|   3 | @mui/material                     | ^5.14.17 |
-|   4 | @mui/x-data-grid                  | ^6.18.4  |
-|   5 | axios                             | ^1.6.1   |
-|   6 | react                             | ^18.2.0  |
-|   7 | react-dom                         | ^18.2.0  |
-|   8 | react-redux                       | ^8.1.3   |
-|   9 | react-router-dom                  | ^6.17.0  |
-|  10 | redux                             | ^4.2.1   |
-|  11 | redux-devtools-extension          | ^2.13.9  |
-|  12 | redux-thunk                       | ^2.4.2   |
+|   1 | @mui/icons-material               | ^5.14.16 |
+|   2 | @mui/material                     | ^5.14.17 |
+|   3 | @mui/x-data-grid                  | ^6.18.4  |
+|   4 | axios                             | ^1.6.1   |
+|   5 | react                             | ^18.2.0  |
+|   6 | react-dom                         | ^18.2.0  |
+|   7 | react-redux                       | ^8.1.3   |
+|   8 | react-router-dom                  | ^6.17.0  |
+|   9 | redux                             | ^4.2.1   |
+|  10 | redux-devtools-extension          | ^2.13.9  |
+|  11 | redux-thunk                       | ^2.4.2   |
 
 
 #### Run database migrations:
@@ -100,7 +99,7 @@ python manage.py createsuperuser
 
 ### User examples
 #### Donor:
-- email: przyklad@user.pl
+- email: jan@kowalski.pl
 - password: 123456
 
 #### Hospital:
