@@ -86,6 +86,7 @@ def updateUserProfile(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def getUsers(request):
     users = User.objects.filter(is_hospital=False)
     serializer = UserSerializer(users, many=True)
