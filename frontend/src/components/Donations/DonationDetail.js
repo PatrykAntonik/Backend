@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import {Box, Grid, Typography, List, ListItem, ListItemText, Divider} from "@mui/material";
 import {listDonationDetails, ListQuestion, listDonationResponses, deleteDonation} from "../../actions/donationActions";
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../Reusable/Message";
 import Loader from "../Reusable/Loader";
 import Button from "@mui/material/Button";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 
 
 function DonationDetail() {
     const {id} = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const donationDetails = useSelector((state) => state.donationDetails);
     const {loading, error, donation} = donationDetails;
@@ -25,10 +27,20 @@ function DonationDetail() {
     const donationResponses = useSelector(state => state.donationResponses);
     const {responses} = donationResponses;
 
-    const handleDelete = () => {
-        if (window.confirm('Are you sure you want to delete this donation?')) {
-            dispatch(deleteDonation(id));
-        }
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+    const handleDeleteClick = () => {
+        setOpenDeleteDialog(true);
+    };
+
+    const handleConfirmDelete = () => {
+        dispatch(deleteDonation(id));
+        setOpenDeleteDialog(false);
+        navigate("/donation/mydonations");
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setOpenDeleteDialog(false);
     };
 
     const StyledListItemText = ({primary, secondary}) => (
@@ -36,7 +48,7 @@ function DonationDetail() {
             primary={primary}
             // primaryTypographyProps={{sx: {textTransform: 'uppercase'}}}
             secondary={secondary}
-            secondaryTypographyProps={{sx: {color: 'white', fontWeight: 'bold',textTransform: 'uppercase'}}}
+            secondaryTypographyProps={{sx: {color: 'white', fontWeight: 'bold', textTransform: 'uppercase'}}}
         />
     );
 
@@ -91,13 +103,30 @@ function DonationDetail() {
                             variant="contained"
                             color="error"
                             sx={{marginTop: '1rem'}}
-                            onClick={handleDelete}
-                            component={Link}
-                            to="/donation/mydonations"
+                            onClick={handleDeleteClick}
                         >
                             Delete Donation
                         </Button>
                     )}
+                    <Dialog
+                        open={openDeleteDialog}
+                        onClose={handleCloseDeleteDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Are you sure you want to delete this donation?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                            <Button onClick={handleConfirmDelete} color="error">
+                                Delete
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Grid>
 
                 <Grid item xs={12} md={8}>
