@@ -117,7 +117,7 @@ function DonationCreateScreen() {
                     <List sx={{
                         marginTop: '2rem',
                         marginBottom: '5rem',
-                        backgroundColor: 'rgba(0,0,0,0.3)',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
                         color: 'white'
                     }}>
                         {questions && questions.map((question, index) => (
@@ -148,9 +148,10 @@ function DonationCreateScreen() {
                         width: '100%'
                     }}>
                         <Box>
-                            <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>Donation
-                                Type: {donationType}</Typography>
-                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(0,0,0,0.3)', color: 'white'}}>
+                            <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>
+                                Donation Type: {donationType.toUpperCase()}
+                            </Typography>
+                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"

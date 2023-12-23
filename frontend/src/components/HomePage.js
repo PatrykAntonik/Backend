@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {
-    Box, Typography, Paper, Button, Accordion,
-    AccordionSummary, AccordionDetails, CssBaseline
+    Box, Typography, Paper, Button, Accordion, AccordionSummary, AccordionDetails, CssBaseline
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Link} from "react-router-dom";
@@ -9,10 +8,9 @@ import backgroundImage from '../static/background.webp';
 
 function HomePage() {
 
-    return (
-        <CssBaseline>
+    return (<CssBaseline>
             <Box sx={{my: 4, position: 'relative', zIndex: 1}}>
-                <Typography sx={{color: 'white',fontWeight:'500'}} variant="h2" component="h1" gutterBottom>
+                <Typography sx={{color: 'white', fontWeight: '500'}} variant="h2" component="h1" gutterBottom>
                     Blood and Marrow Donation
                 </Typography>
                 <Typography sx={{color: 'white'}} variant="h5" gutterBottom>
@@ -43,13 +41,22 @@ function HomePage() {
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                     >
-                        <Typography variant="h6">How to Become a Donor?</Typography>
+                        <Typography variant="h6">How to Become a donor with our website?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography paragraph>
-                            Becoming a donor is a straightforward process. For blood donation, it involves a quick and
-                            safe procedure at a clinic or donation center. Marrow donation requires a more thorough
-                            examination but can be a transformative gift for someone in need.
+                            To become a donor, you must first register with our website. You will then be asked to
+                            answer a series of {' '}
+                            <Typography
+                                component={Link}
+                                to={'/questions'}
+                                color="secondary"
+                                underline={'hover'}
+                            >
+                                questions
+                            </Typography>
+                            {' '}to determine your eligibility. Once hospital staff have verified your eligibility,
+                            you will be contacted via email to schedule an appointment.
                         </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -68,8 +75,7 @@ function HomePage() {
                     </Button>
                 </Paper>
             </Box>
-        </CssBaseline>
-    );
+        </CssBaseline>);
 }
 
 export default HomePage;

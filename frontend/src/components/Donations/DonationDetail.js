@@ -63,7 +63,7 @@ function DonationDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <Typography variant="h6">Donor Information</Typography>
-                    <List sx={{backgroundColor: 'rgba(0,0,0,0.3)', color: 'white', borderRadius: 5}}>
+                    <List sx={{backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', borderRadius: 5}}>
                         <ListItem>
                             <StyledListItemText primary="First Name" secondary={donation.donor?.first_name || 'N/A'}/>
                         </ListItem>
@@ -103,7 +103,7 @@ function DonationDetail() {
                 <Grid item xs={12} md={8}>
                     <Typography variant="h6"
                     >Questions with responses</Typography>
-                    <List sx={{backgroundColor: 'rgba(0,0,0,0.3)', color: 'white', borderRadius: 5}}>
+                    <List sx={{backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', borderRadius: 5}}>
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>

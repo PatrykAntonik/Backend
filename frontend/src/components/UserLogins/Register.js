@@ -8,6 +8,7 @@ import {Box, Button, Container, CssBaseline, Grid, Link, Switch, TextField, Tool
 import Avatar from "@mui/material/Avatar";
 import InfoIcon from '@mui/icons-material/Info';
 import {CustomTooltip} from "../Reusable/CustomTooltip";
+import {isEmail, isMobilePhone, isURL, isPostalCode, isStrongPassword,} from 'validator';
 
 
 function Register() {
@@ -26,10 +27,73 @@ function Register() {
     const [website_url, setWebsiteUrl] = useState("");
     const [message, setMessage] = useState("");
 
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [urlError, setUrlError] = useState('');
+    const [zipCodeError, setZipCodeError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
     const userRegister = useSelector(state => state.userRegister);
     const {loading, error, userInfo} = userRegister;
     const isLogged = useSelector(state => state.userLogin.userInfo);
 
+
+    const validateZipCode = (zip) => {
+        if (!isPostalCode(zip, 'PL')) {
+            setZipCodeError('Invalid zip code');
+        } else {
+            setZipCodeError('');
+        }
+    }
+
+    const validateEmail = (email) => {
+        if (!isEmail(email)) {
+            setEmailError('Invalid email address');
+        } else {
+            setEmailError('');
+        }
+    };
+
+    const validatePhoneNumber = (phone) => {
+        if (!isMobilePhone(phone, 'any', {strictMode: false})) {
+            setPhoneError('Invalid phone number');
+        } else {
+            setPhoneError('');
+        }
+    };
+
+    const validateWebsiteUrl = (url) => {
+        if (!isURL(url, {require_protocol: true})) {
+            setUrlError('Invalid website URL');
+        } else {
+            setUrlError('');
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+
+        if (!isStrongPassword(newPassword, {
+            minLength: 6, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 0,
+        })) {
+            setPasswordError('Password must contain at least 6 characters, 1 lowercase, 1 uppercase and 1 number');
+        } else {
+            setPasswordError('');
+        }
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+
+        if (newConfirmPassword !== password) {
+            setConfirmPasswordError('Passwords do not match');
+        } else {
+            setConfirmPasswordError('');
+        }
+    };
 
     useEffect(() => {
         if (isLogged) {
@@ -41,14 +105,28 @@ function Register() {
         setIsHospital(event.target.checked);
     };
 
+    // const submitHandler = (e) => {
+    //     e.preventDefault();
+    //     if (password !== confirmPassword) {
+    //         setMessage("Passwords do not match");
+    //     } else {
+    //         dispatch(register(username, email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
+    //     }
+    // }
+
     const submitHandler = (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setMessage("Passwords do not match");
-        } else {
-            dispatch(register(username, email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
+        setMessage("");
+        if (emailError || phoneError || urlError || zipCodeError ||
+            passwordError || confirmPasswordError || password !== confirmPassword) {
+            setTimeout(() => {
+                setMessage("Please ensure all fields are correctly filled out.");
+            }, 0);
+            return;
         }
-    }
+        dispatch(register(username, email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
+    };
+
 
     return (
         <Box>
@@ -133,7 +211,12 @@ function Register() {
                                             name="website_url"
                                             autoComplete="website_url"
                                             value={website_url}
-                                            onChange={(e) => setWebsiteUrl(e.target.value)}
+                                            error={!!urlError}
+                                            helperText={urlError}
+                                            onChange={(e) => {
+                                                setWebsiteUrl(e.target.value);
+                                                validateWebsiteUrl(e.target.value);
+                                            }}
                                         />
                                     </Grid>
                                 </>
@@ -191,7 +274,13 @@ function Register() {
                                     label="Zip Code"
                                     name="zip_code"
                                     autoComplete="postal-code"
-                                    value={zipCode} onChange={(e) => setZipCode(e.target.value)}
+                                    value={zipCode}
+                                    onChange={(e) => {
+                                        setZipCode(e.target.value);
+                                        validateZipCode(e.target.value);
+                                    }}
+                                    error={!!zipCodeError}
+                                    helperText={zipCodeError}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -203,7 +292,13 @@ function Register() {
                                     label="Phone Number"
                                     name="phone_number"
                                     autoComplete="phone"
-                                    value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
+                                    value={phoneNumber}
+                                    error={!!phoneError}
+                                    helperText={phoneError}
+                                    onChange={(e) => {
+                                        setPhoneNumber(e.target.value);
+                                        validatePhoneNumber(e.target.value);
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -215,7 +310,13 @@ function Register() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus value={email} onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    error={!!emailError}
+                                    helperText={emailError}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        validateEmail(e.target.value);
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -227,12 +328,11 @@ function Register() {
                                     label="Username"
                                     name="username"
                                     autoComplete="username"
-                                    autoFocus value={username} onChange={(e) => setUsername(e.target.value)}
+                                    value={username} onChange={(e) => setUsername(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     required
                                     fullWidth
                                     name="password"
@@ -240,12 +340,12 @@ function Register() {
                                     type="password" id="password"
                                     autoComplete="current-password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                                    onChange={handlePasswordChange}
+                                    error={!!passwordError}
+                                    helperText={passwordError}/>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     required
                                     fullWidth
                                     name="passwordConfirm"
@@ -253,8 +353,9 @@ function Register() {
                                     type="password" id="passwordConfirm"
                                     autoComplete="current-password"
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
+                                    onChange={handleConfirmPasswordChange}
+                                    error={!!confirmPasswordError}
+                                    helperText={confirmPasswordError}/>
                             </Grid>
 
                         </Grid>
@@ -277,7 +378,6 @@ function Register() {
                         </Grid>
                     </Box>
                 </Box>
-
             </Container>
         </Box>
     )

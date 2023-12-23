@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import {isEmail, isMobilePhone, isPostalCode, isURL} from "validator";
 
 
 function UserInfo() {
@@ -33,6 +34,10 @@ function UserInfo() {
     const [message, setMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
+    const [emailError, setEmailError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [urlError, setUrlError] = useState('');
+    const [zipCodeError, setZipCodeError] = useState('');
 
     const dispatch = useDispatch()
 
@@ -68,11 +73,34 @@ function UserInfo() {
         }
     }, [dispatch, userInfo, user]);
 
+    const validateEmail = (email) => {
+        if (!isEmail(email)) setEmailError('Invalid email address');
+        else setEmailError('');
+    };
+
+    const validatePhoneNumber = (phone) => {
+        if (!isMobilePhone(phone, 'any', {strictMode: false})) setPhoneError('Invalid phone number');
+        else setPhoneError('');
+    };
+
+    const validateWebsiteUrl = (url) => {
+        if (is_hospital && !isURL(url, {require_protocol: true})) setUrlError('Invalid website URL');
+        else setUrlError('');
+    };
+
+    const validateZipCode = (zip) => {
+        if (!isPostalCode(zip, 'PL')) setZipCodeError('Invalid zip code');
+        else setZipCodeError('');
+    };
+
 
     const submitHandler = (e) => {
-        e.preventDefault()
-        if (password != confirmPassword) {
-            setMessage('Passwords do not match')
+        e.preventDefault();
+        setMessage('');
+        setShowSuccessAlert(false);
+        if (emailError || phoneError || urlError || zipCodeError || (password !== confirmPassword)) {
+            setTimeout(() => setMessage('Please correct the errors before updating.'), 0);
+            return;
         } else {
             dispatch(UpdateUserProfile({
                 'id': userInfo.id,
@@ -88,7 +116,7 @@ function UserInfo() {
                 'website_url': website_url,
                 'is_hospital': is_hospital
             }))
-            setShowSuccessAlert(true);
+            setTimeout(() => setShowSuccessAlert(true), 0);
         }
     }
 
@@ -102,7 +130,13 @@ function UserInfo() {
                 <CssBaseline/>
                 <Box
                     sx={{
-                        marginBottom: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor:'rgba(0,0,0,0.3)', borderRadius: 5, padding: 5
+                        marginBottom: 10,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.4)',
+                        borderRadius: 5,
+                        padding: 5
                     }}
                 >
                     <Typography variant="h5">
@@ -124,7 +158,6 @@ function UserInfo() {
                                             name="hospital_name"
                                             autoComplete="hospital_name"
                                             value={hospital_name}
-                                            // onChange={(e) => setHospitalName(e.target.value)}
                                             onChange={(e) => {
                                                 setHospitalName(e.target.value);
                                                 setIsHospital(true);
@@ -140,11 +173,13 @@ function UserInfo() {
                                             name="website_url"
                                             autoComplete="website_url"
                                             value={website_url}
-                                            // onChange={(e) => setWebsiteUrl(e.target.value)}
                                             onChange={(e) => {
                                                 setWebsiteUrl(e.target.value);
                                                 setIsHospital(true);
+                                                validateWebsiteUrl(e.target.value);
                                             }}
+                                            error={!!urlError}
+                                            helperText={urlError}
                                         />
                                     </Grid>
                                 </>
@@ -200,7 +235,13 @@ function UserInfo() {
                                     label="Zip Code"
                                     name="zip_code"
                                     autoComplete="postal-code"
-                                    value={zipCode} onChange={(e) => setZipCode(e.target.value)}
+                                    value={zipCode}
+                                    onChange={(e) => {
+                                        setZipCode(e.target.value);
+                                        validateZipCode(e.target.value);
+                                    }}
+                                    error={!!zipCodeError}
+                                    helperText={zipCodeError}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -212,8 +253,15 @@ function UserInfo() {
                                     label="Phone Number"
                                     name="phone_number"
                                     autoComplete="phone"
-                                    value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
+                                    value={phoneNumber}
+                                    onChange={(e) => {
+                                        setPhoneNumber(e.target.value);
+                                        validatePhoneNumber(e.target.value);
+                                    }}
+                                    error={!!phoneError}
+                                    helperText={phoneError}
                                 />
+
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -224,7 +272,13 @@ function UserInfo() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus value={email} onChange={(e) => setEmail(e.target.value)}
+                                    autoFocus value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);
+                                        validateEmail(e.target.value);
+                                    }}
+                                    error={!!emailError}
+                                    helperText={emailError}
                                 />
                             </Grid>
                             <Grid item xs={12}>
