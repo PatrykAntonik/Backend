@@ -45,7 +45,9 @@ class Donation(models.Model):
 class DonationResponse(models.Model):
     donation = models.ForeignKey(Donation, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.BooleanField()
+    answer = models.BooleanField(null=True, blank=True)
 
     def __str__(self):
+        if self.answer is None:
+            return f"{self.donation} - {self.question.text}: No response"
         return f"{self.donation} - {self.question.text}: {'Yes' if self.answer else 'No'}"

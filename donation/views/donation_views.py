@@ -106,7 +106,7 @@ def createDonation(request):
         responses = data.get('responses', [])
         for response in responses:
             question_id = response.get('question_id')
-            answer = response.get('answer', False)
+            answer = response.get('answer')
 
             if Question.objects.filter(id=question_id).exists():
                 DonationResponse.objects.create(

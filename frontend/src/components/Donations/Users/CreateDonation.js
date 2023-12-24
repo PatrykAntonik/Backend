@@ -18,6 +18,7 @@ import {
     AccordionSummary,
     AccordionDetails,
 } from '@mui/material';
+import {green, red} from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loader from '../../Reusable/Loader';
 import Message from '../../Reusable/Message';
@@ -35,6 +36,7 @@ function DonationCreateScreen() {
     const [activeStep, setActiveStep] = useState(0);
     const [donationType, setDonationType] = useState('blood');
     const [responses, setResponses] = useState({});
+    const [message, setMessage] = useState('');
     const steps = getSteps();
     const dispatch = useDispatch();
 
@@ -59,7 +61,7 @@ function DonationCreateScreen() {
     useEffect(() => {
         if (questions && questions.length > 0) {
             const initialResponses = questions.reduce((acc, question) => {
-                acc[question.id] = false;
+                acc[question.id] = null;
                 return acc;
             }, {});
             setResponses(initialResponses);
@@ -68,12 +70,23 @@ function DonationCreateScreen() {
 
 
     const handleNext = () => {
-        if (activeStep === steps.length - 1) {
+        if (activeStep === 1) {
+            const allQuestionsAnswered = questions.every(question => responses[question.id] !== null);
+
+            if (!allQuestionsAnswered) {
+                setMessage("Please answer all questions before proceeding.");
+                window.scrollTo(0, 0);
+            } else {
+                setMessage("");
+                setActiveStep(prevActiveStep => prevActiveStep + 1);
+            }
+        } else if (activeStep === steps.length - 1) {
             submitHandler();
         } else {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setActiveStep(prevActiveStep => prevActiveStep + 1);
         }
     };
+
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -81,15 +94,14 @@ function DonationCreateScreen() {
 
     const handleResponseChange = (questionId, answer) => {
         setResponses((prevResponses) => ({
-            ...prevResponses,
-            [questionId]: answer,
+            ...prevResponses, [questionId]: answer,
         }));
+        setMessage("");
     };
 
     const submitHandler = () => {
         const formattedResponses = Object.keys(responses).map((questionId) => ({
-            question_id: questionId,
-            answer: responses[questionId],
+            question_id: questionId, answer: responses[questionId],
         }));
         dispatch(createDonationWithResponses({donation_type: donationType, responses: formattedResponses}));
     };
@@ -97,50 +109,100 @@ function DonationCreateScreen() {
     const getStepContent = (stepIndex) => {
         switch (stepIndex) {
             case 0:
-                return (
-                    <FormControl fullWidth margin="normal" sx={{marginTop: '5rem', marginBottom: '5rem'}}>
-                        <InputLabel id="donation-type-label">Donation Type</InputLabel>
-                        <Select
-                            labelId="donation-type-label"
-                            id="donation-type"
-                            value={donationType}
-                            label="Donation Type"
-                            onChange={(e) => setDonationType(e.target.value)}
-                        >
-                            <MenuItem value="blood">Blood</MenuItem>
-                            <MenuItem value="marrow">Marrow</MenuItem>
-                        </Select>
-                    </FormControl>
-                );
+                return (<FormControl fullWidth margin="normal" sx={{marginTop: '5rem', marginBottom: '5rem'}}>
+                    <InputLabel id="donation-type-label">Donation Type</InputLabel>
+                    <Select
+                        labelId="donation-type-label"
+                        id="donation-type"
+                        value={donationType}
+                        label="Donation Type"
+                        onChange={(e) => setDonationType(e.target.value)}
+                    >
+                        <MenuItem value="blood">Blood</MenuItem>
+                        <MenuItem value="marrow">Marrow</MenuItem>
+                    </Select>
+                </FormControl>);
             case 1:
                 return (
-                    <List sx={{
-                        marginTop: '2rem',
-                        marginBottom: '5rem',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        color: 'white'
-                    }}>
-                        {questions && questions.map((question, index) => (
-                            <React.Fragment key={question.id}>
-                                <ListItem>
-                                    <ListItemText primary={question.text}/>
-                                    <ListItemIcon style={{minWidth: 'auto'}}>
-                                        <Checkbox
-                                            edge="end"
-                                            sx={{color: "white"}}
-                                            checked={responses[question.id] || false}
-                                            onChange={(e) => handleResponseChange(question.id, e.target.checked)}
-                                        />
-                                    </ListItemIcon>
-                                </ListItem>
-                                {index < questions.length - 1 && <Divider/>}
-                            </React.Fragment>
+                    <>
+                        <Box sx={{marginBottom: '1rem'}}>
+                            {message && <Message severity="error">{message}</Message>}
+                        </Box>
+                        <Grid container
+                              sx={{marginTop: '2rem', padding: 2, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
+                            <Grid item xs={10}>
+                                <Typography
+                                    variant="body1"
+                                    sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>Questions</Typography>
+                            </Grid>
+                            <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                <Typography
+                                    variant="body1"
+                                    sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>Yes</Typography>
+                            </Grid>
+                            <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                <Typography
+                                    variant="body1"
+                                    sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>No</Typography>
+                            </Grid>
+                        </Grid>
+
+                        {questions && questions.map((question) => (
+                            <Grid
+                                container
+                                key={question.id}
+                                sx={{
+                                    paddingRight: 2,
+                                    paddingLeft: 2,
+                                    paddingTop: 1,
+                                    paddingBottom: 1,
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    color: 'white'
+                                }}
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                            >
+                                <Grid item xs={10}>
+                                    <Typography variant="body1">{question.text}</Typography>
+                                </Grid>
+                                <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                    <Checkbox
+                                        checked={responses[question.id] === true}
+                                        onChange={() => handleResponseChange(question.id, true)}
+                                        sx={{
+                                            '& .MuiSvgIcon-root': {fontSize: 32},
+                                            color: 'white',
+                                            '&.Mui-checked': {
+                                                color: 'white',
+                                            },
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                    <Checkbox
+                                        checked={responses[question.id] === false}
+                                        onChange={() => handleResponseChange(question.id, false)}
+                                        sx={{
+                                            '& .MuiSvgIcon-root': {fontSize: 32},
+                                            color: 'white',
+                                            '&.Mui-checked': {
+                                                color: 'white',
+                                            },
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Divider/>
+                                </Grid>
+                            </Grid>
                         ))}
-                    </List>
-                );
+
+                    </>
+
+                )
+                    ;
             case 2:
-                return (
-                    <Box sx={{
+                return (<Box sx={{
                         marginBottom: '5rem',
                         marginTop: '3rem',
                         display: 'flex',
@@ -161,26 +223,23 @@ function DonationCreateScreen() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <List>
-                                        {questions.map((question) => (
-                                            <ListItem key={question.id} sx={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                marginBottom: '1rem'
-                                            }}>
-                                                <Typography sx={{textAlign: 'left'}}>
-                                                    {question.text}
-                                                </Typography>
-                                                <Typography variant='body1'
-                                                            sx={{
-                                                                textAlign: 'right',
-                                                                fontWeight: '500',
-                                                                marginLeft: '50px'
-                                                            }}>
-                                                    {responses[question.id] ? 'Yes' : 'No'}
-                                                </Typography>
-                                            </ListItem>
-                                        ))}
+                                        {questions.map((question) => (<ListItem key={question.id} sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            marginBottom: '1rem'
+                                        }}>
+                                            <Typography sx={{textAlign: 'left'}}>
+                                                {question.text}
+                                            </Typography>
+                                            <Typography variant='body1'
+                                                        sx={{
+                                                            textAlign: 'right',
+                                                            fontWeight: '500',
+                                                            marginLeft: '50px'
+                                                        }}>
+                                                {responses[question.id] === true ? 'YES' : responses[question.id] === false ? 'NO' : 'No Answer'}                                                </Typography>
+                                        </ListItem>))}
                                     </List>
                                 </AccordionDetails>
                             </Accordion>
@@ -195,40 +254,34 @@ function DonationCreateScreen() {
     };
 
     return (
-        <Box sx={{width: '100%'}}>
+        <Box mb={5} sx={{width: '100%'}}>
             <Stepper activeStep={activeStep}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))}
+                {steps.map((label) => (<Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                </Step>))}
             </Stepper>
-            <div>
-                {activeStep === steps.length ? (
-                    <div>
-                        {loading && <Loader/>}
-                        {error && <Message severity="error">{error}</Message>}
-                        {success && <Message severity="success">Donation Created Successfully</Message>}
-                    </div>
-                ) : (
-                    <div>
-                        {getStepContent(activeStep)}
-                        <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
-                            <Button
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                sx={{mr: 1}}
-                            >
-                                Back
-                            </Button>
-                            <Box sx={{flex: '1 1 auto'}}/>
-                            <Button variant="contained" color="primary" onClick={handleNext}>
-                                {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
-                            </Button>
-                        </Box>
-                    </div>
-                )}
-            </div>
+            <Box>
+                {activeStep === steps.length ? (<Box>
+                    {loading && <Loader/>}
+                    {error && <Message severity="error">{error}</Message>}
+                    {success && <Message severity="success">Donation Created Successfully</Message>}
+                </Box>) : (<Box>
+                    {getStepContent(activeStep)}
+                    <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
+                        <Button
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            sx={{mr: 1}}
+                        >
+                            Back
+                        </Button>
+                        <Box sx={{flex: '1 1 auto'}}/>
+                        <Button variant="contained" color="primary" onClick={handleNext}>
+                            {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                        </Button>
+                    </Box>
+                </Box>)}
+            </Box>
         </Box>
     );
 }

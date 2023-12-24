@@ -22,7 +22,6 @@ function Questions() {
     const [donationType, setDonationType] = useState(0);
 
     useEffect(() => {
-        // Assuming ListQuestion takes a string argument like 'blood' or 'marrow'
         dispatch(ListQuestion(donationType === 0 ? 'blood' : 'marrow'));
     }, [dispatch, donationType]);
 
@@ -50,12 +49,13 @@ function Questions() {
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>
-                                    <ListItem sx={{color:'white', fontWeight:'800'}}>
+                                    <ListItem sx={{color: 'white', fontWeight: '800'}}>
                                         <ListItemButton>
                                             <ListItemIcon>
-                                                <QuestionMarkIcon size="large" sx={{ color: 'white' }}/>
+                                                <QuestionMarkIcon size="large" sx={{color: 'white'}}/>
                                             </ListItemIcon>
-                                            <ListItemText sx={{textAlign: 'left', marginLeft:'50px'}} primary={`${question.text}`}/>
+                                            <ListItemText sx={{textAlign: 'left', marginLeft: '50px'}}
+                                                          primary={`${question.text}`}/>
                                         </ListItemButton>
                                     </ListItem>
                                     <Divider/>
@@ -63,11 +63,19 @@ function Questions() {
                             ))
                         ) : (
                             <ListItem>
-                                <ListItemText sx={{color:'white'}} primary="No questions found for this donation type."/>
+                                <ListItemText sx={{color: 'white'}}
+                                              primary="No questions found for this donation type."/>
                             </ListItem>
                         )}
                     </List>
             }
+            <Typography variant="body2" color="textSecondary" align="center" sx={{marginTop: 4}}>
+                The questions presented are sourced from {' '}
+                <a href="https://www.dkms.pl/" target="_blank" rel="noopener noreferrer">DKMS</a>
+                {' '} and {' '}
+                <a href="https://krwiodawcy.org/ankiety-dla-kandydatow-na-dawcow" target="_blank"
+                   rel="noopener noreferrer">Krwiodawcy.org</a>.
+            </Typography>
         </Box>
     );
 }

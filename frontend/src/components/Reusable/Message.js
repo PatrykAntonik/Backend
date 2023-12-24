@@ -14,7 +14,7 @@ function Message({severity, children}) {
             <Collapse in={open}>
                 <Alert
                     severity={severity}
-                    variant="outlined"
+                    variant="filled"
                     action={
                         <IconButton
                             aria-label="close"
