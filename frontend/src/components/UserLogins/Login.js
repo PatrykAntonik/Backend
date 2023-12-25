@@ -28,13 +28,21 @@ function Login() {
     const [password, setPassword] = useState("");
     const userLogin = useSelector(state => state.userLogin);
     const {loading, error, userInfo} = userLogin;
+    const [message, setMessage] = useState("");
 
 
     useEffect(() => {
-        if (userInfo) {
-            window.location.href = '/account';
+            if (userInfo) {
+                setMessage('Login Successful');
+                setTimeout(() => {
+                    window.location.href = '/account';
+                }, 2000);
+            }
         }
-    }, [userInfo]);
+        ,
+        [userInfo]
+    )
+    ;
 
 
     const submitHandler = (e) => {
@@ -42,7 +50,6 @@ function Login() {
         dispatch(login(email, password));
     }
 
-    // HIDING PASSWORD
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
@@ -52,6 +59,7 @@ function Login() {
     return (
         <Box>
             {loading && <Loader/>}
+            {message && <Message variant="error">{message}</Message>}
             {error && <Message severity="error">{error}</Message>}
             <Container maxWidth="xs">
                 <CssBaseline/>

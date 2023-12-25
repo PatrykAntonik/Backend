@@ -10,7 +10,7 @@ export const CustomTooltip = ({title, children}) => {
     };
 
     return (
-        <Tooltip title={<Typography style={CustomTooltipStyles.tooltip}>{title}</Typography>} placement="right">
+        <Tooltip title={<Typography style={CustomTooltipStyles.tooltip}>{title}</Typography>} placement="top">
             {children}
         </Tooltip>
     );

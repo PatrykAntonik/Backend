@@ -30,6 +30,7 @@ function UserInfo() {
     const [hospital_name, setHospitalName] = useState("");
     const [website_url, setWebsiteUrl] = useState("");
     const [is_hospital, setIsHospital] = useState(false);
+    const [showNewQuestionsMessage, setShowNewQuestionsMessage] = useState(false);
 
     const [message, setMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);

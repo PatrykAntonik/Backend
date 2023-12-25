@@ -206,6 +206,7 @@ export default function PersistentDrawerLeft() {
                                 fontSize="large"
                                 sx={{
                                     mr: 1,
+                                    display: { xs: 'none', sm: 'block'}
                                 }}
                             />
                             <Typography

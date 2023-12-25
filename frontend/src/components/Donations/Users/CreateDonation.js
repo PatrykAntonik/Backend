@@ -110,13 +110,17 @@ function DonationCreateScreen() {
         switch (stepIndex) {
             case 0:
                 return (<FormControl fullWidth margin="normal" sx={{marginTop: '5rem', marginBottom: '5rem'}}>
-                    <InputLabel id="donation-type-label">Donation Type</InputLabel>
+                    <InputLabel id="donation-type-label" sx={{color: 'white'}}>Donation Type</InputLabel>
                     <Select
                         labelId="donation-type-label"
                         id="donation-type"
                         value={donationType}
                         label="Donation Type"
                         onChange={(e) => setDonationType(e.target.value)}
+                        sx={{
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            color: 'white',
+                        }}
                     >
                         <MenuItem value="blood">Blood</MenuItem>
                         <MenuItem value="marrow">Marrow</MenuItem>
@@ -130,17 +134,17 @@ function DonationCreateScreen() {
                         </Box>
                         <Grid container
                               sx={{marginTop: '2rem', padding: 2, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
-                            <Grid item xs={10}>
+                            <Grid item xs={8} md={10}>
                                 <Typography
                                     variant="body1"
                                     sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>Questions</Typography>
                             </Grid>
-                            <Grid item xs={1} sx={{textAlign: 'center'}}>
+                            <Grid item xs={2} md={1} sx={{textAlign: 'center'}}>
                                 <Typography
                                     variant="body1"
                                     sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>Yes</Typography>
                             </Grid>
-                            <Grid item xs={1} sx={{textAlign: 'center'}}>
+                            <Grid item xs={2} md={1} sx={{textAlign: 'center'}}>
                                 <Typography
                                     variant="body1"
                                     sx={{fontWeight: 'bold', textTransform: 'uppercase'}}>No</Typography>
@@ -162,10 +166,10 @@ function DonationCreateScreen() {
                                 justifyContent={'center'}
                                 alignItems={'center'}
                             >
-                                <Grid item xs={10}>
+                                <Grid item xs={8} md={10}>
                                     <Typography variant="body1">{question.text}</Typography>
                                 </Grid>
-                                <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                <Grid item xs={2} md={1} sx={{textAlign: 'center'}}>
                                     <Checkbox
                                         checked={responses[question.id] === true}
                                         onChange={() => handleResponseChange(question.id, true)}
@@ -178,7 +182,7 @@ function DonationCreateScreen() {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={1} sx={{textAlign: 'center'}}>
+                                <Grid item xs={2} md={1} sx={{textAlign: 'center'}}>
                                     <Checkbox
                                         checked={responses[question.id] === false}
                                         onChange={() => handleResponseChange(question.id, false)}

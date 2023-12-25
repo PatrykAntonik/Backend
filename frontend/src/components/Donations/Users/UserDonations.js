@@ -66,6 +66,7 @@ function UserDonations() {
             <Box display="flex" justifyContent="flex-end">
                 <Button
                     component={Link}
+                    variant="contained"
                     to="/donation/create"
                     color="primary"
                     size="large"
