@@ -41,9 +41,7 @@ function Login() {
         }
         ,
         [userInfo]
-    )
-    ;
-
+    );
 
     const submitHandler = (e) => {
         e.preventDefault();
