@@ -9,7 +9,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
 
-# USER MODEL FOR DONOR, HOSPITAL AND ADMIN
+# USER MODEL FOR DONOR, HOSPITAL AND ADMIN USER TYPES
 class User(AbstractUser):
     city = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)

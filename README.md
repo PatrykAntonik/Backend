@@ -25,7 +25,7 @@ yarn (>= 1.22.5)
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/PatrykAntonik/transplantApp.git
+git clone https://github.com/PatrykAntonik/Backend.git
 ```
 
 #### Navigate to the Repository
@@ -57,20 +57,20 @@ cd frontend
 yarn
 ```
 
-| Nr. | Dependency                        | Version  |
-|----:|-----------------------------------|----------|
-|   1 | @mui/icons-material               | ^5.14.16 |
-|   2 | @mui/material                     | ^5.14.17 |
-|   3 | @mui/x-data-grid                  | ^6.18.4  |
-|   4 | axios                             | ^1.6.1   |
-|   5 | react                             | ^18.2.0  |
-|   6 | react-dom                         | ^18.2.0  |
-|   7 | react-redux                       | ^8.1.3   |
-|   8 | react-router-dom                  | ^6.17.0  |
-|   9 | redux                             | ^4.2.1   |
-|  10 | redux-devtools-extension          | ^2.13.9  |
-|  11 | redux-thunk                       | ^2.4.2   |
-
+| Nr. | Dependency               | Version  |
+|----:|--------------------------|----------|
+|   1 | @mui/icons-material      | ^5.14.16 |
+|   2 | @mui/material            | ^5.14.17 |
+|   3 | @mui/x-data-grid         | ^6.18.4  |
+|   4 | axios                    | ^1.6.1   |
+|   5 | react                    | ^18.2.0  |
+|   6 | react-dom                | ^18.2.0  |
+|   7 | react-redux              | ^8.1.3   |
+|   8 | react-router-dom         | ^6.17.0  |
+|   9 | redux                    | ^4.2.1   |
+|  10 | redux-devtools-extension | ^2.13.9  |
+|  11 | redux-thunk              | ^2.4.2   |
+|  12 | validator                | ^13.11.0 |
 
 #### Run database migrations:
 
@@ -97,14 +97,27 @@ npm start
 python manage.py createsuperuser
 ```
 
+### Open app:
+http://localhost:3000/
+
+### Open admin panel:
+http://localhost:8000/admin/
+
 ### User examples
+
 #### Donor:
+
 - email: jan@kowalski.pl
-- password: 123456
+- password: Hasło123
 
 #### Hospital:
-- email: szpital@hospital.com.pl
-- password: 123456
+
+- email: szpital@bielsko.pl
+- password: Hasło123
+
+#### Admin:
+- username: admin
+- password: 123
 
 ### License
 
