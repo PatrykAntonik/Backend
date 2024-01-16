@@ -46,9 +46,8 @@ function DonationDetail() {
     const StyledListItemText = ({primary, secondary}) => (
         <ListItemText
             primary={primary}
-            // primaryTypographyProps={{sx: {textTransform: 'uppercase'}}}
             secondary={secondary}
-            secondaryTypographyProps={{sx: {color: 'white', fontWeight: 'bold', textTransform: 'uppercase'}}}
+            secondaryTypographyProps={{sx: {color: 'black', fontWeight: 'bold', textTransform: 'uppercase'}}}
         />
     );
 
@@ -75,7 +74,7 @@ function DonationDetail() {
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <Typography variant="h6">Donor Information</Typography>
-                    <List sx={{backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', borderRadius: 5}}>
+                    <List sx={{backgroundColor: 'rgba(255,255,255,0.9)', color: 'black', borderRadius: 5}}>
                         <ListItem>
                             <StyledListItemText primary="First Name" secondary={donation.donor?.first_name || 'N/A'}/>
                         </ListItem>
@@ -92,7 +91,7 @@ function DonationDetail() {
                     {isHospital ? (
                         <Button
                             href={`mailto:${donation.donor?.email}`}
-                            variant="outlined"
+                            variant="contained"
                             color="primary"
                             sx={{marginTop: '1rem'}}
                         >
@@ -132,7 +131,7 @@ function DonationDetail() {
                 <Grid item xs={12} md={8}>
                     <Typography variant="h6"
                     >Questions with responses</Typography>
-                    <List sx={{backgroundColor: 'rgba(0,0,0,0.5)', color: 'white', borderRadius: 5}}>
+                    <List sx={{backgroundColor: 'rgba(255,255,255,0.9)', color: 'black', borderRadius: 5}}>
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>

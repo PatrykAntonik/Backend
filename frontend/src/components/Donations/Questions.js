@@ -45,14 +45,14 @@ function Questions() {
 
             {loadingQuestions ? <Loader/> :
                 errorQuestions ? <Message severity="error">{errorQuestions}</Message> :
-                    <List sx={{width: '100%', bgcolor: 'rgba(0,0,0,0.6)'}} component="nav" aria-label="questions list">
+                    <List sx={{width: '100%', bgcolor: 'rgba(255,255,255,0.9)'}} component="nav" aria-label="questions list">
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>
-                                    <ListItem sx={{color: 'white', fontWeight: '800'}}>
+                                    <ListItem sx={{color: 'black', fontWeight: '800'}}>
                                         <ListItemButton>
                                             <ListItemIcon>
-                                                <QuestionMarkIcon size="large" sx={{color: 'white'}}/>
+                                                <QuestionMarkIcon size="large" sx={{color: 'black'}}/>
                                             </ListItemIcon>
                                             <ListItemText sx={{textAlign: 'left', marginLeft: '50px'}}
                                                           primary={`${question.text}`}/>

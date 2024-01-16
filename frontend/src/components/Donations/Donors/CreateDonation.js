@@ -110,7 +110,7 @@ function DonationCreateScreen() {
         switch (stepIndex) {
             case 0:
                 return (<FormControl fullWidth margin="normal" sx={{marginTop: '5rem', marginBottom: '5rem'}}>
-                    <InputLabel id="donation-type-label" sx={{color: 'white'}}>Donation Type</InputLabel>
+                    <InputLabel id="donation-type-label" sx={{color: 'black'}}>Donation Type</InputLabel>
                     <Select
                         labelId="donation-type-label"
                         id="donation-type"
@@ -118,8 +118,14 @@ function DonationCreateScreen() {
                         label="Donation Type"
                         onChange={(e) => setDonationType(e.target.value)}
                         sx={{
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            color: 'white',
+                            backgroundColor: 'rgba(255,255,255,0.9)',
+                            color: 'black',
+                            '& .MuiSelect-icon': {color: 'black'},
+                            '& .MuiSelect-root': {color: 'black'},
+                            '& .MuiInputBase-root': {color: 'black'},
+                            '& .MuiOutlinedInput-notchedOutline': {borderColor: 'black'},
+                            '&:hover .MuiOutlinedInput-notchedOutline': {borderColor: 'black'},
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {borderColor: 'black'},
                         }}
                     >
                         <MenuItem value="blood">Blood</MenuItem>
@@ -133,7 +139,10 @@ function DonationCreateScreen() {
                             {message && <Message severity="error">{message}</Message>}
                         </Box>
                         <Grid container
-                              sx={{marginTop: '2rem', padding: 2, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
+                              sx={{
+                                  marginTop: '2rem', padding: 2, backgroundColor: 'rgba(255,255,255,0.9)',
+                                  color: 'black',
+                              }}>
                             <Grid item xs={8} md={10}>
                                 <Typography
                                     variant="body1"
@@ -160,8 +169,8 @@ function DonationCreateScreen() {
                                     paddingLeft: 2,
                                     paddingTop: 1,
                                     paddingBottom: 1,
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    color: 'white'
+                                    backgroundColor: 'rgba(255,255,255,0.9)',
+                                    color: 'black',
                                 }}
                                 justifyContent={'center'}
                                 alignItems={'center'}
@@ -175,9 +184,9 @@ function DonationCreateScreen() {
                                         onChange={() => handleResponseChange(question.id, true)}
                                         sx={{
                                             '& .MuiSvgIcon-root': {fontSize: 32},
-                                            color: 'white',
+                                            color: 'black',
                                             '&.Mui-checked': {
-                                                color: 'white',
+                                                color: 'black',
                                             },
                                         }}
                                     />
@@ -188,15 +197,15 @@ function DonationCreateScreen() {
                                         onChange={() => handleResponseChange(question.id, false)}
                                         sx={{
                                             '& .MuiSvgIcon-root': {fontSize: 32},
-                                            color: 'white',
+                                            color: 'black',
                                             '&.Mui-checked': {
-                                                color: 'white',
+                                                color: 'black',
                                             },
                                         }}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Divider/>
+                                    <Divider sx={{backgroundColor: 'rgba(0,0,0,0.5)'}}/>
                                 </Grid>
                             </Grid>
                         ))}
@@ -217,7 +226,7 @@ function DonationCreateScreen() {
                             <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>
                                 Donation Type: {donationType.toUpperCase()}
                             </Typography>
-                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(0,0,0,0.5)', color: 'white'}}>
+                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(255,255,255,0.9)', color: 'black'}}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"

@@ -37,8 +37,8 @@ function DonorsList() {
                         columns={columns}
                         sx={{
                             borderRadius: 5,
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            color: 'white',
+                            backgroundColor: 'rgba(255,255,255,0.9)',
+                            color: 'black',
                             fontSize: '1rem',
                             borderColor: 'rgba(0,0,0,0.2)',
                         }}
