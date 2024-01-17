@@ -72,11 +72,7 @@ yarn
 |  11 | redux-thunk              | ^2.4.2   |
 |  12 | validator                | ^13.11.0 |
 
-#### Run database migrations:
 
-```bash
-python manage.py migrate
-```
 
 #### Start the Django server:
 
@@ -95,6 +91,11 @@ npm start
 
 ```bash
 python manage.py createsuperuser
+```
+#### Run database migrations:
+
+```bash
+python manage.py migrate
 ```
 
 ### Open app:
