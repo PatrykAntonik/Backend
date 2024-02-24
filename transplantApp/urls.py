@@ -23,9 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/donations/', include('donation.urls.donation_urls')),
     path('api/users/', include('donation.urls.user_urls')),
-    path(r'', TemplateView.as_view(template_name="index.html")),
-    re_path(r'.*', TemplateView.as_view(template_name="index.html")),
-
+    path('', TemplateView.as_view(template_name="index.html")),
+    # re_path(r'.*', TemplateView.as_view(template_name="index.html")),
 ]
 
 # urlpatterns += [re_path(r'^.*$', TemplateView.as_view(template_name="index.html"))]
