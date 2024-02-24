@@ -36,7 +36,8 @@ function DonationDetail() {
     const handleConfirmDelete = () => {
         dispatch(deleteDonation(id));
         setOpenDeleteDialog(false);
-        navigate("/donations/mydonations");
+        navigate("/donation/mydonations");
+        navigate(0);
     };
 
     const handleCloseDeleteDialog = () => {

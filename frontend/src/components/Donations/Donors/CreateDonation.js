@@ -27,12 +27,14 @@ import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import {useNavigate} from "react-router-dom";
 
 function getSteps() {
     return ['Select Donation Type', 'Answer Questions', 'Submit'];
 }
 
 function DonationCreateScreen() {
+    const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
     const [donationType, setDonationType] = useState('blood');
     const [responses, setResponses] = useState({});
@@ -54,9 +56,9 @@ function DonationCreateScreen() {
 
     useEffect(() => {
         if (success) {
-            window.location.href = '/donation/mydonations';
+            navigate('/donation/mydonations');
         }
-    }, [success]);
+    }, [success, navigate]);
 
     useEffect(() => {
         if (questions && questions.length > 0) {
@@ -226,7 +228,8 @@ function DonationCreateScreen() {
                             <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>
                                 Donation Type: {donationType.toUpperCase()}
                             </Typography>
-                            <Accordion sx={{marginBottom: '1rem', backgroundColor: 'rgba(255,255,255,0.9)', color: 'black'}}>
+                            <Accordion
+                                sx={{marginBottom: '1rem', backgroundColor: 'rgba(255,255,255,0.9)', color: 'black'}}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"
