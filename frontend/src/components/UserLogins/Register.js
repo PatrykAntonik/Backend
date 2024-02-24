@@ -9,6 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import InfoIcon from '@mui/icons-material/Info';
 import {CustomTooltip} from "../Reusable/CustomTooltip";
 import {isEmail, isMobilePhone, isURL, isPostalCode, isStrongPassword,} from 'validator';
+import {useNavigate} from "react-router-dom";
 
 
 function Register() {
@@ -37,6 +38,7 @@ function Register() {
     const userRegister = useSelector(state => state.userRegister);
     const {loading, error, userInfo} = userRegister;
     const isLogged = useSelector(state => state.userLogin.userInfo);
+    const navigate = useNavigate();
 
 
     const validateZipCode = (zip) => {
@@ -95,24 +97,26 @@ function Register() {
         }
     };
 
+
     useEffect(() => {
+        let timer;
         if (isLogged) {
-            window.location.href = '/account';
+            timer = setTimeout(() => {
+                setMessage('Registration  Successful');
+                navigate('/account');
+            }, 2000);
         }
-    }, [isLogged]);
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+        };
+    }, [isLogged, navigate]);
+
 
     const handleChange = (event) => {
         setIsHospital(event.target.checked);
     };
-
-    // const submitHandler = (e) => {
-    //     e.preventDefault();
-    //     if (password !== confirmPassword) {
-    //         setMessage("Passwords do not match");
-    //     } else {
-    //         dispatch(register(username, email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
-    //     }
-    // }
 
     const submitHandler = (e) => {
         e.preventDefault();

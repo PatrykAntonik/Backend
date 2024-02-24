@@ -36,7 +36,7 @@ function DonationDetail() {
     const handleConfirmDelete = () => {
         dispatch(deleteDonation(id));
         setOpenDeleteDialog(false);
-        navigate("/donation/mydonations");
+        navigate("/donations/mydonations");
     };
 
     const handleCloseDeleteDialog = () => {
@@ -155,26 +155,6 @@ function DonationDetail() {
                         )}
                     </List>
                 </Grid>
-
-                {/*<Grid item xs={6} md={4}>*/}
-                {/*    <Typography variant="h6" sx={{marginBottom: '1.5rem'}}>Donation Responses</Typography>*/}
-                {/*    <List>*/}
-                {/*        {responses && responses.length > 0 ? (*/}
-                {/*            responses.map((response) => (*/}
-                {/*                <React.Fragment key={response.id}>*/}
-                {/*                    <ListItem>*/}
-                {/*                        <ListItemText primary={response.answer ? 'Yes' : 'No'}/>*/}
-                {/*                    </ListItem>*/}
-                {/*                    <Divider/>*/}
-                {/*                </React.Fragment>*/}
-                {/*            ))*/}
-                {/*        ) : (*/}
-                {/*            <Typography>No responses found.</Typography>*/}
-                {/*        )}*/}
-                {/*    </List>*/}
-                {/*</Grid>*/}
-
-
             </Grid>
 
         </Box>

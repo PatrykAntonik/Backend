@@ -30,7 +30,6 @@ function UserInfo() {
     const [hospital_name, setHospitalName] = useState("");
     const [website_url, setWebsiteUrl] = useState("");
     const [is_hospital, setIsHospital] = useState(false);
-    const [showNewQuestionsMessage, setShowNewQuestionsMessage] = useState(false);
 
     const [message, setMessage] = useState("");
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -104,18 +103,18 @@ function UserInfo() {
             return;
         } else {
             dispatch(UpdateUserProfile({
-                'id': userInfo.id,
-                'username': username,
-                'email': email,
-                'password': password,
-                'first_name': firstName,
-                'last_name': lastName,
-                'city': city,
-                'zip_code': zipCode,
-                'phone_number': phoneNumber,
-                'hospital_name': hospital_name,
-                'website_url': website_url,
-                'is_hospital': is_hospital
+                id: userInfo.id,
+                username: username,
+                email: email,
+                password: password,
+                first_name: firstName,
+                last_name: lastName,
+                city: city,
+                zip_code: zipCode,
+                phone_number: phoneNumber,
+                hospital_name: hospital_name,
+                website_url: website_url,
+                is_hospital: is_hospital
             }))
             setTimeout(() => setShowSuccessAlert(true), 0);
         }

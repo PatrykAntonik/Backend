@@ -21,27 +21,29 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import {useNavigate} from 'react-router-dom';
+
 
 function Login() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const userLogin = useSelector(state => state.userLogin);
     const {loading, error, userInfo} = userLogin;
     const [message, setMessage] = useState("");
 
-
     useEffect(() => {
-            if (userInfo) {
-                setMessage('Login Successful');
-                setTimeout(() => {
-                    window.location.href = '/account';
-                }, 2000);
-            }
+        let timer;
+        if (userInfo) {
+            setMessage('Login Successful');
+            timer = setTimeout(() => {
+                navigate('/account');
+            }, 2000);
         }
-        ,
-        [userInfo]
-    );
+        return () => clearTimeout(timer);
+    }, [userInfo, navigate]);
+
 
     const submitHandler = (e) => {
         e.preventDefault();
