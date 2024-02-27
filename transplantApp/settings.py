@@ -154,7 +154,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'transplantApp',
         'USER': 'patryka2000',
-        'PASSWORD': '9DF5ftexhYJa',
+        'PASSWORD': 'password',
         'HOST': 'ep-aged-wind-a2jpgyck.eu-central-1.aws.neon.tech',
         'PORT': '5432',
         'OPTIONS': {'sslmode': 'require'},
