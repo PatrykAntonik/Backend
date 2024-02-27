@@ -28,3 +28,4 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html")),
     # re_path(r'.*', TemplateView.as_view(template_name="index.html")),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

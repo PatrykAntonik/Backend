@@ -6,6 +6,7 @@ CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
 DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 connection_string = os.environ['AZURE_POSTRGRESQL_CONNECTIONSTRING']  # Azure PostgreSQL
