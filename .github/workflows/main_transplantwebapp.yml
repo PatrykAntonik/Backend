@@ -30,6 +30,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Install front-end dependencies
+        run: | 
+          cd frontend
+            npm install
+            npm run build
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
       - name: Collect static files
         run: python manage.py collectstatic --noinput
 
