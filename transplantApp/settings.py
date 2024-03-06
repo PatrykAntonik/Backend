@@ -158,7 +158,6 @@ DATABASES = {
         'PASSWORD': '9DF5ftexhYJa',
         'HOST': 'ep-aged-wind-a2jpgyck.eu-central-1.aws.neon.tech',
         'PORT': '5432',
-        'OPTIONS': {'sslmode': 'require'},
     }
 }
 
