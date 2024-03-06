@@ -40,6 +40,8 @@ jobs:
           cd frontend
           npm install
           npm run build
+        env:
+          CI: false
 
       - name: Collect static files
         run: python manage.py collectstatic --noinput
