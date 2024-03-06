@@ -20,12 +20,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pw0()sa&%68*bz7ph(o!36g28tf9!9we_2$_6@m0i(=!m6#*2k'
+# SECRET_KEY = 'django-insecure-pw0()sa&%68*bz7ph(o!36g28tf9!9we_2$_6@m0i(=!m6#*2k'
+
+SECRET_KEY = os.environ['SECRET']
+
+
+ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'], 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
+
+connection_string = os.environ['AZURE_POSTRGRESQL_CONNECTIONSTRING']  # Azure PostgreSQL
+parameters = {pair.split('=')[0]: pair.split('=')[1] for pair in connection_string.split(' ')}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
 
 # Application definition
 
@@ -100,6 +109,7 @@ SIMPLE_JWT = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Whitenoise
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
