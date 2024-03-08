@@ -30,12 +30,21 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Build frontend
+        run: |
           cd frontend
-            npm install
-            npm run build
+          npm install
+          npm run build
           cd ..
-          env:
-            CI: false  
+        env:
+          CI: false  # This suppresses treating warnings as errors
 
       - name: Collect static files
         run: |
