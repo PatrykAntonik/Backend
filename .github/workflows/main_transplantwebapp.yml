@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - transplantWebApp
+name: Build and deploy Python app to Azure Web App - transplantwebapp
 
 on:
   push:
@@ -26,27 +26,10 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-
+      
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install and build front-end dependencies
-        run: |
-          cd frontend
-          npm install
-          npm run build
-        env:
-          CI: false
-
-      - name: Collect static files
-        run: python manage.py collectstatic --noinput
-
-
+        
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
@@ -66,9 +49,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -78,18 +59,11 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_81A04B7D4B0C43BA8079F011EF9413C5 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B61FD896B2C74F849C0CAB07209F2202 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4E0BDD82B9A446A093F1D48B3EC74BF7 }}
-
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'transplantWebApp'
+          app-name: 'transplantwebapp'
           slot-name: 'Production'
-          
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_91F28EAC05EA425593B83E1F631659FE }}
