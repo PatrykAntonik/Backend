@@ -16,16 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
-from django.urls import re_path
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/donations/', include('donation.urls.donation_urls')),
     path('api/users/', include('donation.urls.user_urls')),
-    path('', TemplateView.as_view(template_name="index.html")),
-    # re_path(r'.*', TemplateView.as_view(template_name="index.html")),
 ]
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
