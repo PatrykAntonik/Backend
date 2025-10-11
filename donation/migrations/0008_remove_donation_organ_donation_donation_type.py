@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0007_remove_donation_donation_type_donation_organ'),
+        ("donation", "0007_remove_donation_donation_type_donation_organ"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='donation',
-            name='organ',
+            model_name="donation",
+            name="organ",
         ),
         migrations.AddField(
-            model_name='donation',
-            name='donation_type',
-            field=models.CharField(choices=[('blood', 'Blood'), ('marrow', 'Marrow')], default='', max_length=10),
+            model_name="donation",
+            name="donation_type",
+            field=models.CharField(
+                choices=[("blood", "Blood"), ("marrow", "Marrow")],
+                default="",
+                max_length=10,
+            ),
             preserve_default=False,
         ),
     ]

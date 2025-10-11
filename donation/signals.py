@@ -1,19 +1,15 @@
-from django.db.models.signals import pre_save, post_save
-from .models import User, Donation, Question, DonationResponse
-from django.dispatch import receiver
+from django.db.models.signals import pre_save
+
+from .models import User
 
 
 def updateUser(sender, instance, **kwargs):
+    """
+    Update the username to be the email before saving the User instance.
+    """
     user = instance
-    if user.email != '':
+    if user.email != "":
         user.username = user.email
 
 
-# @receiver(post_save, sender=Question)
-# def new_question_added(sender, instance, created, **kwargs):
-#     if created:
-#         User.objects.all().update(new_questions_available=True)
-
-
 pre_save.connect(updateUser, sender=User)
-# post_save.connect(new_question_added, sender=Question)

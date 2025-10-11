@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0006_remove_donation_organ_donation_donation_type'),
+        ("donation", "0006_remove_donation_organ_donation_donation_type"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='donation',
-            name='donation_type',
+            model_name="donation",
+            name="donation_type",
         ),
         migrations.AddField(
-            model_name='donation',
-            name='organ',
-            field=models.CharField(default='', max_length=255),
+            model_name="donation",
+            name="organ",
+            field=models.CharField(default="", max_length=255),
             preserve_default=False,
         ),
     ]

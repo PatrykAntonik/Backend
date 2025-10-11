@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0008_remove_donation_organ_donation_donation_type'),
+        ("donation", "0008_remove_donation_organ_donation_donation_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='question',
-            name='id',
+            model_name="question",
+            name="id",
             field=models.AutoField(primary_key=True, serialize=False),
         ),
     ]

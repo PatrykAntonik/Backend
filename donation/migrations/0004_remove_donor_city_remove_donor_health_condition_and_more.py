@@ -7,53 +7,55 @@ import phone_field.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0003_alter_donationprocess_finished_at'),
+        ("donation", "0003_alter_donationprocess_finished_at"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='donor',
-            name='city',
+            model_name="donor",
+            name="city",
         ),
         migrations.RemoveField(
-            model_name='donor',
-            name='health_condition',
+            model_name="donor",
+            name="health_condition",
         ),
         migrations.RemoveField(
-            model_name='donor',
-            name='phone_number',
+            model_name="donor",
+            name="phone_number",
         ),
         migrations.RemoveField(
-            model_name='donor',
-            name='zip_code',
+            model_name="donor",
+            name="zip_code",
         ),
         migrations.RemoveField(
-            model_name='hospital',
-            name='city',
+            model_name="hospital",
+            name="city",
         ),
         migrations.RemoveField(
-            model_name='hospital',
-            name='phone_number',
+            model_name="hospital",
+            name="phone_number",
         ),
         migrations.RemoveField(
-            model_name='hospital',
-            name='zip_code',
+            model_name="hospital",
+            name="zip_code",
         ),
         migrations.AddField(
-            model_name='user',
-            name='city',
-            field=models.CharField(default='Zabrze', max_length=100),
+            model_name="user",
+            name="city",
+            field=models.CharField(default="Zabrze", max_length=100),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='user',
-            name='phone_number',
-            field=phone_field.models.PhoneField(default=123456789, max_length=31, unique=True),
+            model_name="user",
+            name="phone_number",
+            field=phone_field.models.PhoneField(
+                default=123456789, max_length=31, unique=True
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='user',
-            name='zip_code',
+            model_name="user",
+            name="zip_code",
             field=models.CharField(default=-759, max_length=20),
             preserve_default=False,
         ),

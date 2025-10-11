@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0013_alter_user_options'),
+        ("donation", "0013_alter_user_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='hospital_name',
+            model_name="user",
+            name="hospital_name",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='is_hospital',
+            model_name="user",
+            name="is_hospital",
             field=models.BooleanField(blank=True, default=False, null=True),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='website_url',
+            model_name="user",
+            name="website_url",
             field=models.URLField(blank=True, null=True),
         ),
     ]

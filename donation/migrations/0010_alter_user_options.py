@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0009_alter_question_id'),
+        ("donation", "0009_alter_question_id"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
-            options={'permissions': (('can_view_user', 'Can view user'),)},
+            name="user",
+            options={"permissions": (("can_view_user", "Can view user"),)},
         ),
     ]

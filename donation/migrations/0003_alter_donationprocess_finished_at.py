@@ -7,13 +7,15 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0002_alter_donor_zip_code'),
+        ("donation", "0002_alter_donor_zip_code"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='donationprocess',
-            name='finished_at',
-            field=models.DateTimeField(blank=True, default=django.utils.timezone.now, null=True),
+            model_name="donationprocess",
+            name="finished_at",
+            field=models.DateTimeField(
+                blank=True, default=django.utils.timezone.now, null=True
+            ),
         ),
     ]

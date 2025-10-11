@@ -1,16 +1,26 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phone_field import PhoneField
-from django.utils import timezone
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
-
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
 
 
-# USER MODEL FOR DONOR, HOSPITAL AND ADMIN USER TYPES
 class User(AbstractUser):
+    """
+    Represents a user in the system.
+
+    :ivar city: The city where the user resides.
+    :type city: str
+    :ivar zip_code: The user's zip code.
+    :type zip_code: str
+    :ivar phone_number: The user's phone number.
+    :type phone_number: str
+    :ivar is_hospital: Whether the user is a hospital.
+    :type is_hospital: bool
+    :ivar hospital_name: The name of the hospital.
+    :type hospital_name: str
+    :ivar website_url: The hospital's website URL.
+    :type website_url: str
+    """
+
     city = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)
     phone_number = PhoneField(unique=True)
@@ -20,12 +30,18 @@ class User(AbstractUser):
 
 
 class Question(models.Model):
+    """
+    Represents a question in the system.
+
+    :ivar text: The text of the question.
+    :type text: str
+    :ivar donation_type: The type of donation the question is for.
+    :type donation_type: str
+    """
+
     id = models.AutoField(primary_key=True)
     text = models.TextField()
-    DONATION_TYPE_CHOICES = [
-        ('blood', 'Blood'),
-        ('marrow', 'Marrow')
-    ]
+    DONATION_TYPE_CHOICES = [("blood", "Blood"), ("marrow", "Marrow")]
     donation_type = models.CharField(max_length=10, choices=DONATION_TYPE_CHOICES)
 
     def __str__(self):
@@ -33,16 +49,42 @@ class Question(models.Model):
 
 
 class Donation(models.Model):
+    """
+    Represents a donation in the system.
+
+    :ivar donor: The user who made the donation.
+    :type donor: User
+    :ivar donation_type: The type of donation.
+    :type donation_type: str
+    :ivar date: The date the donation was made.
+    :type date: date
+    :ivar questions: The questions associated with the donation.
+    :type questions: ManyToManyField
+    """
+
     donor = models.ForeignKey(User, on_delete=models.CASCADE)
-    donation_type = models.CharField(max_length=10, choices=Question.DONATION_TYPE_CHOICES)
+    donation_type = models.CharField(
+        max_length=10, choices=Question.DONATION_TYPE_CHOICES
+    )
     date = models.DateField(auto_now_add=True)
-    questions = models.ManyToManyField(Question, through='DonationResponse')
+    questions = models.ManyToManyField(Question, through="DonationResponse")
 
     def __str__(self):
         return f"{self.donor.first_name} {self.donor.last_name} | {self.donation_type} | {self.date}"
 
 
 class DonationResponse(models.Model):
+    """
+    Represents a response to a donation question.
+
+    :ivar donation: The donation the response is for.
+    :type donation: Donation
+    :ivar question: The question the response is for.
+    :type question: Question
+    :ivar answer: The answer to the question.
+    :type answer: bool
+    """
+
     donation = models.ForeignKey(Donation, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.BooleanField(null=True, blank=True)
@@ -50,4 +92,6 @@ class DonationResponse(models.Model):
     def __str__(self):
         if self.answer is None:
             return f"{self.donation} - {self.question.text}: No response"
-        return f"{self.donation} - {self.question.text}: {'Yes' if self.answer else 'No'}"
+        return (
+            f"{self.donation} - {self.question.text}: {'Yes' if self.answer else 'No'}"
+        )

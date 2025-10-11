@@ -6,26 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0021_donationtype_alter_donation_donation_type_and_more'),
+        ("donation", "0021_donationtype_alter_donation_donation_type_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='donation',
-            name='donation_type',
-            field=models.CharField(choices=[('blood', 'Blood'), ('marrow', 'Marrow')], max_length=10),
+            model_name="donation",
+            name="donation_type",
+            field=models.CharField(
+                choices=[("blood", "Blood"), ("marrow", "Marrow")], max_length=10
+            ),
         ),
         migrations.AlterField(
-            model_name='question',
-            name='donation_type',
-            field=models.CharField(choices=[('blood', 'Blood'), ('marrow', 'Marrow')], max_length=10),
+            model_name="question",
+            name="donation_type",
+            field=models.CharField(
+                choices=[("blood", "Blood"), ("marrow", "Marrow")], max_length=10
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='new_questions_available',
+            model_name="user",
+            name="new_questions_available",
             field=models.BooleanField(default=False),
         ),
         migrations.DeleteModel(
-            name='DonationType',
+            name="DonationType",
         ),
     ]

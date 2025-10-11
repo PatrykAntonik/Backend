@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16.9-alpine
+    container_name: transplant-db
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "8001:5432"
+  api:
+    build:
+      context: .
+      target: dev-runner
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    image: transplant-api-image
+    container_name: transplant-api
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      USE_LOCAL_DB: "true"
+    depends_on:
+      - db
+volumes:
+  db_data:
