@@ -14,7 +14,14 @@ services:
       target: dev-runner
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health/" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     ports:
       - "8000:8000"
     image: transplant-api-image
@@ -26,5 +33,26 @@ services:
       USE_LOCAL_DB: "true"
     depends_on:
       - db
+  web:
+    build:
+      context: ./frontend
+      target: dev-runner
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8000}
+    command: npm start
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:8080"
+    image: transplant-web-image
+    container_name: transplant-web
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      api:
+        condition: service_healthy
+
+
 volumes:
   db_data:

@@ -8,9 +8,12 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from donation.views.health_check import health_check
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("health/", health_check, name="health_check"),
     path("api/donations/", include("donation.urls.donation_urls")),
     path("api/users/", include("donation.urls.user_urls")),
     path("api/schema", SpectacularAPIView.as_view(), name="schema"),

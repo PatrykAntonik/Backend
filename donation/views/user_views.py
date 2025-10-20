@@ -1,23 +1,23 @@
-from django.contrib.auth.hashers import make_password
-from django.db import IntegrityError
-from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from docs.user_docs import (
-    get_user_profile_docs,
     get_users_docs,
     login_user_docs,
     register_user_docs,
-    update_user_profile_docs,
+    user_profile_docs,
 )
 from donation.models import (
     User,
 )
-from donation.serializers import UserSerializer, UserSerializerToken
+from donation.serializers import (
+    UserProfileUpdateSerializer,
+    UserRegistrationSerializer,
+    UserSerializer,
+    UserSerializerToken,
+)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -43,85 +43,43 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 @register_user_docs
-@api_view(["POST"])
-def registerUser(request):
+class RegisterUserView(generics.CreateAPIView):
     """
-    Register a new user
+    Register a new user.
     """
-    data = request.data
-    try:
-        user = User.objects.create(
-            username=data["email"],
-            email=data["email"],
-            password=make_password(data["password"]),
-            first_name=data.get("first_name", ""),
-            last_name=data.get("last_name", ""),
-            city=data["city"],
-            zip_code=data["zip_code"],
-            phone_number=data["phone_number"],
-            is_hospital=data.get("is_hospital", False),
-            hospital_name=data.get("hospital_name", ""),
-            website_url=data.get("website_url", ""),
-        )
-        serializer = UserSerializerToken(user, many=False)
-        return Response(serializer.data)
-    except IntegrityError as e:
-        if "UNIQUE constraint failed" in str(e):
-            message = {"detail": "User with this email already exists"}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            message = {"detail": str(e)}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        message = {"detail": str(e)}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    queryset = User.objects.all()
+    serializer_class = UserRegistrationSerializer
+    permission_classes = [AllowAny]
 
 
-@get_user_profile_docs
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def getUserProfile(request):
+@user_profile_docs
+class UserProfileView(generics.RetrieveUpdateAPIView):
     """
-    Retrieve user profile
+    Retrieve or update a user profile.
     """
-    user = request.user
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
 
+    permission_classes = [IsAuthenticated]
 
-@update_user_profile_docs
-@api_view(["PUT"])
-@permission_classes([IsAuthenticated])
-def updateUserProfile(request):
-    """
-    Update user profile
-    """
-    user = request.user
-    serializer = UserSerializerToken(user, many=False)
-    data = request.data
-    user.username = data["email"]
-    user.email = data["email"]
-    user.first_name = data.get("first_name", "")
-    user.last_name = data.get("last_name", "")
-    user.city = data["city"]
-    user.zip_code = data["zip_code"]
-    user.phone_number = data["phone_number"]
-    user.is_hospital = data.get("is_hospital")
-    user.hospital_name = data.get("hospital_name", "")
-    user.website_url = data.get("website_url", "")
-    if data["password"] != "":
-        user.password = make_password(data["password"])
-    user.save()
-    return Response(serializer.data)
+    def get_object(self):
+        return self.request.user
+
+    def get_serializer_class(self):
+        if self.request.method == "PUT":
+            return UserProfileUpdateSerializer
+        return UserSerializer
 
 
 @get_users_docs
-@api_view(["GET"])
-@permission_classes([IsAuthenticated, IsAdminUser])
-def getUsers(request):
+class UserListView(generics.ListAPIView):
     """
     Retrieve all donors
     """
-    users = User.objects.filter(is_hospital=False, is_staff=False, is_superuser=False)
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return User.objects.filter(
+            is_hospital=False, is_staff=False, is_superuser=False
+        )

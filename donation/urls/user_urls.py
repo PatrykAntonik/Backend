@@ -2,17 +2,15 @@ from django.urls import path
 
 from donation.views.user_views import (
     MyTokenObtainPairView,
-    getUserProfile,
-    getUsers,
-    registerUser,
-    updateUserProfile,
+    RegisterUserView,
+    UserListView,
+    UserProfileView,
 )
 
 
 urlpatterns = [
-    path("", getUsers, name="users"),
+    path("", UserListView.as_view(), name="users"),
     path("login/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("profile/", getUserProfile, name="users-profile"),
-    path("profile/update/", updateUserProfile, name="users-profile-update"),
-    path("register/", registerUser, name="register"),
+    path("profile/", UserProfileView.as_view(), name="users-profile"),
+    path("register/", RegisterUserView.as_view(), name="register"),
 ]

@@ -44,6 +44,43 @@ class UserSerializerToken(UserSerializer):
         return str(token.access_token)
 
 
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating the User model."""
+
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "city",
+            "zip_code",
+            "phone_number",
+            "hospital_name",
+            "website_url",
+            "password",
+            "token",
+        )
+        read_only_fields = ("is_hospital",)
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        instance = super().update(instance, validated_data)
+        if password:
+            instance.set_password(password)
+            instance.save()
+        return instance
+
+
 class DonationSerializer(serializers.ModelSerializer):
     """Serializer for the Donation model."""
 
@@ -72,3 +109,48 @@ class ResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DonationResponse
         fields = "__all__"
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    """Serializer for user registration."""
+
+    password = serializers.CharField(write_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+            "city",
+            "zip_code",
+            "phone_number",
+            "is_hospital",
+            "hospital_name",
+            "website_url",
+            "token",
+        )
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["email"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+            first_name=validated_data.get("first_name", ""),
+            last_name=validated_data.get("last_name", ""),
+            city=validated_data["city"],
+            zip_code=validated_data["zip_code"],
+            phone_number=validated_data["phone_number"],
+            is_hospital=validated_data.get("is_hospital", False),
+            hospital_name=validated_data.get("hospital_name", ""),
+            website_url=validated_data.get("website_url", ""),
+        )
+        return user

@@ -77,7 +77,7 @@ class TestUserViews:
 
     def test_update_user_profile(self, api_client, user):
         api_client.force_authenticate(user=user)
-        url = "/api/users/profile/update/"
+        url = "/api/users/profile/"
         data = {
             "email": "updated@example.com",
             "username": "updated@example.com",

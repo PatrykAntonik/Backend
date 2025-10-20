@@ -1,26 +1,16 @@
 from drf_spectacular.utils import extend_schema
 
-from donation.serializers import UserSerializer, UserSerializerToken
+from donation.serializers import (
+    UserProfileUpdateSerializer,
+    UserSerializer,
+    UserSerializerToken,
+)
 
 
 register_user_docs = extend_schema(
     summary="Register a new user",
     description="Creates a new user and returns the user data along with a token.",
     responses={201: UserSerializerToken},
-    tags=["Users"],
-)
-
-get_user_profile_docs = extend_schema(
-    summary="Get user profile",
-    description="Returns the profile of the currently authenticated user.",
-    responses={200: UserSerializer},
-    tags=["Users"],
-)
-
-update_user_profile_docs = extend_schema(
-    summary="Update user profile",
-    description="Updates the profile of the currently authenticated user.",
-    responses={200: UserSerializerToken},
     tags=["Users"],
 )
 
@@ -36,4 +26,14 @@ login_user_docs = extend_schema(
     description="Authenticates a user and returns a token.",
     responses={200: UserSerializerToken},
     tags=["Users"],
+)
+
+user_profile_docs = extend_schema(
+    summary="User Profile",
+    description="Retrieve or update the profile of the currently authenticated user.",
+    tags=["Users"],
+    responses={
+        200: UserSerializer,
+        201: UserProfileUpdateSerializer,
+    },
 )
