@@ -19,9 +19,8 @@ def user_data():
         "first_name": "Test",
         "last_name": "User",
         "city": "Test City",
-        "zip_code": "12345",
-        "phone_number": "+12125552368",
-        "username": "test@example.com",
+        "zip_code": "12-345",
+        "phone_number": "12125552368",
     }
 
 
@@ -33,7 +32,6 @@ def user(user_data):
 @pytest.fixture
 def admin_user():
     return User.objects.create_user(
-        username="hospital@example.com",
         email="hospital@example.com",
         password="password123",
         is_hospital=True,
@@ -41,27 +39,38 @@ def admin_user():
     )
 
 
+@pytest.fixture
+def register_data():
+    return {
+        "email": "newuser@example.com",
+        "password": "newpassword",
+        "first_name": "New",
+        "last_name": "User",
+        "city": "New City",
+        "zip_code": "54-321",
+        "phone_number": "12125552369",
+    }
+
+
 @pytest.mark.django_db
 class TestUserViews:
-    def test_register_user(self, api_client):
+    def test_register_user(self, api_client, register_data):
         url = "/api/users/register/"
-        data = {
-            "email": "newuser@example.com",
-            "username": "newuser@example.com",
-            "password": "newpassword",
-            "first_name": "New",
-            "last_name": "User",
-            "city": "New City",
-            "zip_code": "54321",
-            "phone_number": "+12125552369",
-        }
-        response = api_client.post(url, data, format="json")
-        assert response.status_code == status.HTTP_200_OK
+        response = api_client.post(url, register_data, format="json")
+        assert response.status_code == status.HTTP_201_CREATED
         assert User.objects.count() == 1
+
+    def test_register_user_invalid_data(self, api_client, register_data):
+        url = "/api/users/register/"
+        data = register_data.copy()
+        data["zip_code"] = "543210"
+        data["phone_number"] = "121255523a"
+        response = api_client.post(url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_login_user(self, api_client, user):
         url = "/api/users/login/"
-        data = {"username": user.username, "password": "testpassword"}
+        data = {"email": user.email, "password": "testpassword"}
         response = api_client.post(url, data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert "access" in response.data
@@ -80,13 +89,12 @@ class TestUserViews:
         url = "/api/users/profile/"
         data = {
             "email": "updated@example.com",
-            "username": "updated@example.com",
             "password": "updatedpassword",
             "first_name": "Updated",
             "last_name": "User",
             "city": "Updated City",
-            "zip_code": "54321",
-            "phone_number": "+12125552360",
+            "zip_code": "54-321",
+            "phone_number": "12125552360",
             "is_hospital": False,
             "hospital_name": "",
             "website_url": "",
@@ -101,3 +109,21 @@ class TestUserViews:
         url = "/api/users/"
         response = api_client.get(url)
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_update_user_profile_invalid_data(self, api_client, user):
+        api_client.force_authenticate(user=user)
+        url = "/api/users/profile/"
+        data = {
+            "email": "updated@example.com",
+            "password": "updatedpassword",
+            "first_name": "Updated",
+            "last_name": "User",
+            "city": "Updated City",
+            "zip_code": "543210",
+            "phone_number": "+1212555236",
+            "is_hospital": False,
+            "hospital_name": "",
+            "website_url": "invalid_url",
+        }
+        response = api_client.put(url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST

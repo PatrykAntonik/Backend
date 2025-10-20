@@ -65,7 +65,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
     def get_serializer_class(self):
-        if self.request.method == "PUT":
+        if self.request.method in ["PUT", "PATCH"]:
             return UserProfileUpdateSerializer
         return UserSerializer
 

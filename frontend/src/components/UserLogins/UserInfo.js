@@ -14,11 +14,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {isEmail, isMobilePhone, isPostalCode, isURL} from "validator";
+import {isEmail, isMobilePhone, isPostalCode, isURL, isStrongPassword} from "validator";
 
 
 function UserInfo() {
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,6 +37,8 @@ function UserInfo() {
     const [phoneError, setPhoneError] = useState('');
     const [urlError, setUrlError] = useState('');
     const [zipCodeError, setZipCodeError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const dispatch = useDispatch()
 
@@ -60,7 +61,6 @@ function UserInfo() {
             if (isHospital) {
                 setIsHospital(true);
             }
-            setUsername(user.username);
             setEmail(user.email);
             setFirstName(user.first_name);
             setLastName(user.last_name);
@@ -93,18 +93,41 @@ function UserInfo() {
         else setZipCodeError('');
     };
 
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+
+        if (!isStrongPassword(newPassword, {
+            minLength: 6, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 0,
+        })) {
+            setPasswordError('Password must contain at least 6 characters, 1 lowercase, 1 uppercase and 1 number');
+        } else {
+            setPasswordError('');
+        }
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+
+        if (newConfirmPassword !== password) {
+            setConfirmPasswordError('Passwords do not match');
+        } else {
+            setConfirmPasswordError('');
+        }
+    };
+
 
     const submitHandler = (e) => {
         e.preventDefault();
         setMessage('');
         setShowSuccessAlert(false);
-        if (emailError || phoneError || urlError || zipCodeError || (password !== confirmPassword)) {
+        if (emailError || phoneError || urlError || zipCodeError || passwordError || confirmPasswordError || (password !== confirmPassword)) {
             setTimeout(() => setMessage('Please correct the errors before updating.'), 0);
             return;
         } else {
             dispatch(UpdateUserProfile({
                 id: userInfo.id,
-                username: username,
                 email: email,
                 password: password,
                 first_name: firstName,
@@ -283,39 +306,27 @@ function UserInfo() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    margin="dense"
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                    autoFocus value={username} onChange={(e) => setUsername(e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     fullWidth
                                     name="password"
                                     label="Password"
                                     type="password" id="password"
                                     autoComplete="current-password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                                    onChange={handlePasswordChange}
+                                    error={!!passwordError}
+                                    helperText={passwordError}/>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    helperText={password.length < 6 ? "Password must be at least 6 characters" : ""}
                                     fullWidth
                                     name="passwordConfirm"
                                     label="Confirm Password"
                                     type="password" id="passwordConfirm"
                                     autoComplete="current-password"
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
+                                    onChange={handleConfirmPasswordChange}
+                                    error={!!confirmPasswordError}
+                                    helperText={confirmPasswordError}/>
                             </Grid>
 
                         </Grid>

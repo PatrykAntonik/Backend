@@ -1,9 +1,11 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from phone_field import PhoneField
 
+from .managers import CustomUserManager
 
-class User(AbstractUser):
+
+class User(AbstractBaseUser, PermissionsMixin):
     """
     Represents a user in the system.
 
@@ -21,12 +23,21 @@ class User(AbstractUser):
     :type website_url: str
     """
 
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    email = models.EmailField(max_length=255, unique=True)
     city = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)
     phone_number = PhoneField(unique=True)
     is_hospital = models.BooleanField(default=False, blank=True, null=True)
     hospital_name = models.CharField(max_length=255, blank=True, null=True)
     website_url = models.URLField(blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
 
 class Question(models.Model):

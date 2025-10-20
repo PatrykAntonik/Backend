@@ -14,7 +14,6 @@ import {useNavigate} from "react-router-dom";
 
 function Register() {
     const dispatch = useDispatch();
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -128,7 +127,7 @@ function Register() {
             }, 0);
             return;
         }
-        dispatch(register(username, email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
+        dispatch(register(email, password, firstName, lastName, city, zipCode, phoneNumber, is_hospital, hospital_name, website_url));
     };
 
 
@@ -321,18 +320,6 @@ function Register() {
                                         setEmail(e.target.value);
                                         validateEmail(e.target.value);
                                     }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    margin="dense"
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                    value={username} onChange={(e) => setUsername(e.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>

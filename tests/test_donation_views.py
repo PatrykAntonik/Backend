@@ -13,7 +13,6 @@ def api_client():
 @pytest.fixture
 def user():
     return User.objects.create_user(
-        username="testuser@example.com",
         email="testuser@example.com",
         password="password123",
         phone_number="+12125552368",
@@ -24,7 +23,6 @@ def user():
 @pytest.fixture
 def hospital_user():
     return User.objects.create_user(
-        username="hospital@example.com",
         email="hospital@example.com",
         password="password123",
         phone_number="+12125552369",

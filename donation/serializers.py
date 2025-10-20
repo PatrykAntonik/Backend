@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Donation, DonationResponse, Question, User
@@ -13,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "username",
             "first_name",
             "last_name",
             "email",
@@ -37,7 +37,7 @@ class UserSerializerToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "token"]
+        fields = ["id", "email", "token"]
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
@@ -47,6 +47,40 @@ class UserSerializerToken(UserSerializer):
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     """Serializer for updating the User model."""
 
+    email = serializers.EmailField(
+        required=False,
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="User with this email already exists.",
+            )
+        ],
+    )
+    phone_number = serializers.RegexField(
+        regex=r"^\d{9,15}$",
+        required=False,
+        allow_blank=False,
+        error_messages={
+            "invalid": "Phone number must contain 9 to 15 digits.",
+        },
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="User with this phone number already exists.",
+            )
+        ],
+    )
+    zip_code = serializers.RegexField(
+        regex=r"^\d{2}-\d{3}$",
+        required=False,
+        allow_blank=False,
+        error_messages={
+            "invalid": "Zip code must match the format 12-345.",
+        },
+    )
+    website_url = serializers.URLField(
+        required=False, allow_blank=True, allow_null=True
+    )
     password = serializers.CharField(write_only=True, required=False, allow_blank=True)
     token = serializers.SerializerMethodField(read_only=True)
 
@@ -54,7 +88,6 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "id",
-            "username",
             "first_name",
             "last_name",
             "email",
@@ -71,6 +104,22 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+    def validate(self, data):
+        data = super().validate(data)
+
+        errors = {}
+        if self.instance.is_hospital and not data.get("hospital_name"):
+            errors["hospital_name"] = "Hospital name is required for hospital accounts."
+
+        website_url = data.get("website_url")
+        if self.instance.is_hospital and not website_url:
+            errors["website_url"] = "Website url is required for hospital accounts."
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return data
 
     def update(self, instance, validated_data):
         password = validated_data.pop("password", None)
@@ -114,6 +163,35 @@ class ResponseSerializer(serializers.ModelSerializer):
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """Serializer for user registration."""
 
+    email = serializers.EmailField(
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="User with this email already exists.",
+            )
+        ]
+    )
+    phone_number = serializers.RegexField(
+        regex=r"^\d{9,15}$",
+        error_messages={
+            "invalid": "Phone number must contain 9 to 15 digits.",
+        },
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="User with this phone number already exists.",
+            )
+        ],
+    )
+    zip_code = serializers.RegexField(
+        regex=r"^\d{2}-\d{3}$",
+        error_messages={
+            "invalid": "Zip code must match the format 12-345.",
+        },
+    )
+    website_url = serializers.URLField(
+        required=False, allow_blank=True, allow_null=True
+    )
     password = serializers.CharField(write_only=True)
     token = serializers.SerializerMethodField(read_only=True)
 
@@ -121,7 +199,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             "id",
-            "username",
             "email",
             "password",
             "first_name",
@@ -139,9 +216,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+    def validate(self, data):
+        data = super().validate(data)
+
+        if data.get("is_hospital") and not data.get("hospital_name"):
+            raise serializers.ValidationError(
+                {"hospital_name": "Hospital name is required for hospital accounts."}
+            )
+
+        return data
+
     def create(self, validated_data):
         user = User.objects.create_user(
-            username=validated_data["email"],
             email=validated_data["email"],
             password=validated_data["password"],
             first_name=validated_data.get("first_name", ""),
