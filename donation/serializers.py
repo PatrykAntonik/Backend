@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Donation, DonationResponse, Question, User
+from .validators import validate_password_strength
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,11 +58,11 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         ],
     )
     phone_number = serializers.RegexField(
-        regex=r"^\d{9,15}$",
+        regex=r"^\+?\d{9,15}$",
         required=False,
         allow_blank=False,
         error_messages={
-            "invalid": "Phone number must contain 9 to 15 digits.",
+            "invalid": "Phone number must contain 9 to 15 digits and may start with +.",
         },
         validators=[
             UniqueValidator(
@@ -81,7 +82,12 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     website_url = serializers.URLField(
         required=False, allow_blank=True, allow_null=True
     )
-    password = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    password = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        validators=[validate_password_strength],
+    )
     token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -172,9 +178,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         ]
     )
     phone_number = serializers.RegexField(
-        regex=r"^\d{9,15}$",
+        regex=r"^\+?\d{9,15}$",
         error_messages={
-            "invalid": "Phone number must contain 9 to 15 digits.",
+            "invalid": "Phone number must contain 9 to 15 digits and may start with +.",
         },
         validators=[
             UniqueValidator(
@@ -192,7 +198,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     website_url = serializers.URLField(
         required=False, allow_blank=True, allow_null=True
     )
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(
+        write_only=True,
+        validators=[validate_password_strength],
+    )
     token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:

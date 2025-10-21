@@ -15,7 +15,7 @@ def api_client():
 def user_data():
     return {
         "email": "test@example.com",
-        "password": "testpassword",
+        "password": "Testpass1",
         "first_name": "Test",
         "last_name": "User",
         "city": "Test City",
@@ -33,7 +33,7 @@ def user(user_data):
 def admin_user():
     return User.objects.create_user(
         email="hospital@example.com",
-        password="password123",
+        password="AdminPass1",
         is_hospital=True,
         hospital_name="Test Hospital",
     )
@@ -43,7 +43,7 @@ def admin_user():
 def register_data():
     return {
         "email": "newuser@example.com",
-        "password": "newpassword",
+        "password": "Newpass1",
         "first_name": "New",
         "last_name": "User",
         "city": "New City",
@@ -64,13 +64,13 @@ class TestUserViews:
         url = "/api/users/register/"
         data = register_data.copy()
         data["zip_code"] = "543210"
-        data["phone_number"] = "121255523a"
+        data["phone_number"] = "1212555"
         response = api_client.post(url, data, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_login_user(self, api_client, user):
         url = "/api/users/login/"
-        data = {"email": user.email, "password": "testpassword"}
+        data = {"email": user.email, "password": "Testpass1"}
         response = api_client.post(url, data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert "access" in response.data
@@ -89,7 +89,7 @@ class TestUserViews:
         url = "/api/users/profile/"
         data = {
             "email": "updated@example.com",
-            "password": "updatedpassword",
+            "password": "Updated1",
             "first_name": "Updated",
             "last_name": "User",
             "city": "Updated City",
@@ -120,7 +120,7 @@ class TestUserViews:
             "last_name": "User",
             "city": "Updated City",
             "zip_code": "543210",
-            "phone_number": "+1212555236",
+            "phone_number": "1212555",
             "is_hospital": False,
             "hospital_name": "",
             "website_url": "invalid_url",

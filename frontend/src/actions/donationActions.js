@@ -31,7 +31,7 @@ export const listDonations = () => async (dispatch, getState) => {
             },
         };
 
-        const {data} = await api.get("/api/donations", config);
+        const {data} = await api.get("/api/donations/", config);
         dispatch({type: DONATION_LIST_SUCCESS, payload: data});
     } catch (error) {
         dispatch({

@@ -1,11 +1,11 @@
-from rest_framework import status
+from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from donation.models import *
+from donation.models import Donation, DonationResponse, Question
 from donation.serializers import *
 
 
@@ -22,12 +22,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated, IsAdminUser])
-def getDonations(request):
-    donations = Donation.objects.all()
-    serializer = DonationSerializer(donations, many=True)
-    return Response(serializer.data)
+@permission_classes([IsAdminUser])
+class DonationListView(generics.ListAPIView):
+    queryset = Donation.objects.all()
+    serializer_class = DonationSerializer
+    permission_classes = [IsAdminUser]
 
 
 @api_view(["GET"])

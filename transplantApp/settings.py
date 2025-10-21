@@ -2,6 +2,8 @@ from datetime import timedelta
 import os
 from pathlib import Path
 
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,7 +12,6 @@ POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_DB = os.getenv("POSTGRES_DB")
 DB_HOST = os.getenv("DB_HOST", "localhost")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
-USE_LOCAL_DB = os.getenv("USE_LOCAL_DB", "false").lower() == "true"
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
@@ -113,27 +114,35 @@ WSGI_APPLICATION = "transplantApp.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# if USE_LOCAL_DB:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql",
-#             "NAME": POSTGRES_DB,
-#             "USER": POSTGRES_USER,
-#             "PASSWORD": POSTGRES_PASSWORD,
-#             "HOST": DB_HOST,
-#             "PORT": 5432,
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         "default": dj_database_url.config(env="DATABASE_URL", conn_max_age=600)
-#     }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": POSTGRES_DB,
+            "USER": POSTGRES_USER,
+            "PASSWORD": POSTGRES_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": 5432,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": dj_database_url.config(env="DATABASE_URL", conn_max_age=600)
+    }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+PASSWORD_HASHERS = (
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

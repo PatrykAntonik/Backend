@@ -1,11 +1,11 @@
 from django.urls import path
 
 from donation.views.donation_views import (
+    DonationListView,
     createDonation,
     deleteDonation,
     getDonation,
     getDonationResponses,
-    getDonations,
     getDonationTypeQuestions,
     getMyDonations,
     getMyResponses,
@@ -14,7 +14,7 @@ from donation.views.donation_views import (
 
 
 urlpatterns = [
-    path("", getDonations, name="donations"),
+    path("", DonationListView.as_view(), name="donations"),
     path(
         "<int:donation_id>/questions/",
         getDonationTypeQuestions,
