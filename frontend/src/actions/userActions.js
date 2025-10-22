@@ -14,6 +14,58 @@ import {
 } from "../constants/UserConstants";
 import api from '../utils/api';
 
+const extractErrorMessage = (error) => {
+    const response = error?.response;
+    const data = response?.data;
+
+    // No server response (network error, CORS, timeout)
+    if (!response) {
+        if (error?.message) return error.message;
+        try { return String(error); } catch { return 'Unexpected error'; }
+    }
+
+    // If backend returned plain text
+    if (typeof data === 'string') {
+        return data;
+    }
+
+    // Prefer common fields
+    if (data?.detail) return data.detail;
+    if (data?.message) return data.message;
+    if (data?.error) return data.error;
+
+    // Root-level array of errors
+    if (Array.isArray(data) && data.length > 0) {
+        const firstItem = data[0];
+        if (typeof firstItem === 'string') return firstItem;
+        if (firstItem?.message) return firstItem.message;
+    }
+
+    // DRF validation error shape: { field: ["msg"] } or { non_field_errors: ["msg"] }
+    if (data && typeof data === 'object') {
+        const keys = Object.keys(data);
+        for (const key of keys) {
+            const value = data[key];
+            if (Array.isArray(value) && value.length > 0) {
+                const firstValue = value[0];
+                if (typeof firstValue === 'string') {
+                    return key === 'non_field_errors' ? firstValue : `${key}: ${firstValue}`;
+                }
+                if (firstValue?.message) {
+                    return key === 'non_field_errors' ? firstValue.message : `${key}: ${firstValue.message}`;
+                }
+            }
+            if (typeof value === 'string' && value) {
+                return key === 'non_field_errors' ? value : `${key}: ${value}`;
+            }
+        }
+    }
+
+    // Fallbacks
+    if (response?.statusText) return response.statusText;
+    return error?.message || 'Unexpected error';
+}
+
 export const login = (email, password) => async (dispatch) => {
     try {
         dispatch({
@@ -32,7 +84,7 @@ export const login = (email, password) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+            payload: extractErrorMessage(error),
         });
     }
 }
@@ -75,7 +127,7 @@ export const register = (email, password, first_name, last_name, city, zip_code,
     } catch (error) {
         dispatch({
             type: USER_REGISTER_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+            payload: extractErrorMessage(error),
         });
     }
 }
@@ -108,7 +160,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+            payload: extractErrorMessage(error),
         })
     }
 }
@@ -142,7 +194,7 @@ export const UpdateUserProfile = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+            payload: extractErrorMessage(error),
         })
     }
 }
@@ -172,7 +224,7 @@ export const listUsers = () => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_LIST_FAIL,
-            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+            payload: extractErrorMessage(error),
         })
-    }
+}
 }
