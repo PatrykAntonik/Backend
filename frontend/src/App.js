@@ -15,7 +15,8 @@ import Questions from "./components/Donations/Questions";
 import CreateDonation from "./components/Donations/Donors/CreateDonation";
 import Contact from "./components/Contact";
 import backgroundImage from './static/background.webp';
-import Box from "@mui/material/Box";
+import {ThemeProvider} from '@mui/material/styles';
+import theme from './theme';
 
 function App() {
     useEffect(() => {
@@ -30,50 +31,51 @@ function App() {
         };
     }, []);
     return (
-
-        <HashRouter>
-            <Header/>
-            <Container>
-                <Routes>
-                    <Route path='' element={<HomePage/>}/>
-                    <Route path='/contact' element={<Contact/>}/>
-                    <Route path='/login' element={<Login/>}/>
-                    <Route path='/register' element={<Register/>}/>
-                    <Route path='/questions' element={<Questions/>}/>
-                    <Route path="/users" element={
-                        <Protect_user>
-                            <DonorsList/>
-                        </Protect_user>
-                    }/>
-                    <Route path="/account" element={
-                        <Protect_user>
-                            <UserInfo/>
-                        </Protect_user>
-                    }/>
-                    <Route path='/donation' element={
-                        <Protect_user>
-                            <DonationsList/>
-                        </Protect_user>
-                    }/>
-                    <Route path='/donation/:id' element={
-                        <Protect_user>
-                            <DonationDetail/>
-                        </Protect_user>
-                    }/>
-                    <Route path='/donation/mydonations' element={
-                        <Protect_user>
-                            <UserDonations/>
-                        </Protect_user>
-                    }/>
-                    <Route path='/donation/create' element={
-                        <Protect_user>
-                            <CreateDonation/>
-                        </Protect_user>
-                    }/>
-                </Routes>
-            </Container>
-            {/*<Footer/>*/}
-        </HashRouter>
+        <ThemeProvider theme={theme}>
+            <HashRouter>
+                <Header/>
+                <Container>
+                    <Routes>
+                        <Route path='' element={<HomePage/>}/>
+                        <Route path='/contact' element={<Contact/>}/>
+                        <Route path='/login' element={<Login/>}/>
+                        <Route path='/register' element={<Register/>}/>
+                        <Route path='/questions' element={<Questions/>}/>
+                        <Route path="/users" element={
+                            <Protect_user>
+                                <DonorsList/>
+                            </Protect_user>
+                        }/>
+                        <Route path="/account" element={
+                            <Protect_user>
+                                <UserInfo/>
+                            </Protect_user>
+                        }/>
+                        <Route path='/donation' element={
+                            <Protect_user>
+                                <DonationsList/>
+                            </Protect_user>
+                        }/>
+                        <Route path='/donation/:id' element={
+                            <Protect_user>
+                                <DonationDetail/>
+                            </Protect_user>
+                        }/>
+                        <Route path='/donation/mydonations' element={
+                            <Protect_user>
+                                <UserDonations/>
+                            </Protect_user>
+                        }/>
+                        <Route path='/donation/create' element={
+                            <Protect_user>
+                                <CreateDonation/>
+                            </Protect_user>
+                        }/>
+                    </Routes>
+                </Container>
+                {/*<Footer/>*/}
+            </HashRouter>
+        </ThemeProvider>
     );
 }
 

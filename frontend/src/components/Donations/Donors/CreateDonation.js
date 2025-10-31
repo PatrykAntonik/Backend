@@ -119,7 +119,7 @@ function DonationCreateScreen() {
                         label="Donation Type"
                         onChange={(e) => setDonationType(e.target.value)}
                         sx={{
-                            backgroundColor: 'rgba(255,255,255,0.9)',
+                            backgroundColor: 'custom.baseWhite',
                             color: 'black',
                             '& .MuiSelect-icon': {color: 'black'},
                             '& .MuiSelect-root': {color: 'black'},
@@ -141,7 +141,7 @@ function DonationCreateScreen() {
                         </Box>
                         <Grid container
                               sx={{
-                                  marginTop: '2rem', padding: 2, backgroundColor: 'rgba(255,255,255,0.9)',
+                                  marginTop: '2rem', padding: 2, backgroundColor: 'custom.baseWhite',
                                   color: 'black',
                               }}>
                             <Grid item xs={8} md={10}>
@@ -170,7 +170,7 @@ function DonationCreateScreen() {
                                     paddingLeft: 2,
                                     paddingTop: 1,
                                     paddingBottom: 1,
-                                    backgroundColor: 'rgba(255,255,255,0.9)',
+                                    backgroundColor: 'custom.baseWhite',
                                     color: 'black',
                                 }}
                                 justifyContent={'center'}
@@ -227,7 +227,7 @@ function DonationCreateScreen() {
                                 Donation Type: {donationType.toUpperCase()}
                             </Typography>
                             <Accordion
-                                sx={{marginBottom: '1rem', backgroundColor: 'rgba(255,255,255,0.9)', color: 'black'}}>
+                                sx={{marginBottom: '1rem', backgroundColor: 'custom.baseWhite', color: 'black'}}>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon/>}
                                     aria-controls="panel1a-content"

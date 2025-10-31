@@ -1,0 +1,750 @@
+[
+{
+  "model": "donation.user",
+  "pk": 1,
+  "fields": {
+    "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$akFaZmQ3alZ0VmVGZ1lOSWFXQmxrdw$xvJQCOojXtOSKb+yaVOSgjz2+zZ+KPr42pL2euic2Lg",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "email": "hospital@example.com",
+    "city": "Warsaw",
+    "zip_code": "00-820",
+    "phone_number": "000000000",
+    "is_hospital": true,
+    "hospital_name": "Hospital Example",
+    "website_url": "https://warszawa19115.pl/-/wykaz-szpitali",
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "donation.user",
+  "pk": 2,
+  "fields": {
+    "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$dUdiVE16dGV4MkU0RzJicERmTGk2SA$SJrwh0MqPpo9vRep+JNnxXbZg9CbXWQD0pXBYLKoT/o",
+    "last_login": "2025-10-21T16:41:42.608Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@example.com",
+    "city": "",
+    "zip_code": "",
+    "phone_number": null,
+    "is_hospital": false,
+    "hospital_name": null,
+    "website_url": null,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "donation.user",
+  "pk": 3,
+  "fields": {
+    "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$OXBVc3BGSm9kbE1nMFJna2pLc2NWQQ$Fo5/W45qbhWXrurgsFd5sFvfFPrIiUSp7CW+jvezyOs",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@doe.com",
+    "city": "Warsaw",
+    "zip_code": "00-000",
+    "phone_number": "000000001",
+    "is_hospital": false,
+    "hospital_name": "",
+    "website_url": "",
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 9,
+  "fields": {
+    "text": "Have you donated blood before?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 10,
+  "fields": {
+    "text": "Do you currently feel healthy?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 11,
+  "fields": {
+    "text": "Have you undergone any dental procedures in the last 7 days?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 12,
+  "fields": {
+    "text": "In the past 4 weeks, have you been sick or under a doctor's care or had a fever above 38 degrees?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 13,
+  "fields": {
+    "text": "Have you taken any medications (pills, injections, suppositories, ointments or other) in the past 4 weeks.",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 14,
+  "fields": {
+    "text": "Have you taken a drug with acetylsalicylic acid as an ingredient (e.g. aspirin) in the past 3 days?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 15,
+  "fields": {
+    "text": "Have you undergone any vaccinations in the past 4 weeks?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 16,
+  "fields": {
+    "text": "Have you noticed the following symptoms in yourself: a) unreasonable weight loss,\r\nb) unreasonable fever, c) enlargement of lymph nodes?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 18,
+  "fields": {
+    "text": "Have you had a gastroscopy, biopsy or other diagnostic test in the past 6 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 19,
+  "fields": {
+    "text": "Have you been seriously ill or had a major surgery or accident in the past 6 months or since your last blood donation?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 20,
+  "fields": {
+    "text": "Have you ever received transfusions of blood or blood components?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 21,
+  "fields": {
+    "text": "Have you ever received a transfusion of blood or blood components?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 22,
+  "fields": {
+    "text": "Have you ever received growth hormone?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 23,
+  "fields": {
+    "text": "Does anyone in your family suffer or has suffered from Creutzfeldt-Jakob disease?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 24,
+  "fields": {
+    "text": "Did you stay for a total of 6 months or more in the UK, France or Ireland between January 01, 1980 and December 31, 1996?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 25,
+  "fields": {
+    "text": "Have you been out of the country in the past 12 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 26,
+  "fields": {
+    "text": "Have you been to Central and West African countries or Thailand in the past 6 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 27,
+  "fields": {
+    "text": "Have you lived or stayed in areas endemic to: malaria or other tropical diseases?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 28,
+  "fields": {
+    "text": "In the past 28 days, have you been in areas where cases of West Nile Virus transmission to humans have been found?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 29,
+  "fields": {
+    "text": "Have you had any of the following done in the past 6 months: tattooing, acupuncture, cosmetic hair removal, ear piercings or other body parts, cosmetic procedures involving skin breakage?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 30,
+  "fields": {
+    "text": "Within the last 6 months or since your last blood donation, have you had any\r\naccidental contact with human blood or instruments contaminated with human blood?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 31,
+  "fields": {
+    "text": "Have you ever undergone jaundice?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 32,
+  "fields": {
+    "text": "Has your life or sex partner undergone hepatitis in the past 6 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 33,
+  "fields": {
+    "text": "Have you had contact with an infectious disease in the past 12 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 34,
+  "fields": {
+    "text": "Have you been on remand or in prison in the past 6 months?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 35,
+  "fields": {
+    "text": "Have you ever been advised not to donate blood?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 36,
+  "fields": {
+    "text": "Do you do dangerous work (e.g., bus driver, diver) or have dangerous\r\nhobbies?",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 40,
+  "fields": {
+    "text": "Are you between 18 and 55 years old?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 41,
+  "fields": {
+    "text": "Is your body mass index (BMI) below 40?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 42,
+  "fields": {
+    "text": "Are you in good general health without medical contraindications as defined by the Ministry of Health Regulation and the World Marrow Donor Organization (WMDA) guidelines?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 43,
+  "fields": {
+    "text": "Have you had a heart attack, pulmonary embolism, atrial fibrillation, history of thrombosis, aortic aneurysm or other serious cardiovascular condition?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 44,
+  "fields": {
+    "text": "Do you suffer from arrhythmias, valvular defects, hypertension or other cardiovascular conditions?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 45,
+  "fields": {
+    "text": "Have you ever had a cancer disease?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 46,
+  "fields": {
+    "text": "Have you experienced cervical in situ cancer that was treated locally?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 47,
+  "fields": {
+    "text": "Have you ever had HIV, HTLV, hepatitis B or hepatitis C virus?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 48,
+  "fields": {
+    "text": "Do you suffer from chronic or untreatable infections?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 49,
+  "fields": {
+    "text": "Have you ever had a transplant, including the use of biological materials?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 50,
+  "fields": {
+    "text": "Have you had transplants using synthetic materials or using your own tissues?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 51,
+  "fields": {
+    "text": "Do you suffer from autoimmune diseases such as ulcerative colitis, Crohn's disease, myasthenia gravis, multiple sclerosis?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 52,
+  "fields": {
+    "text": "Have you had psoriasis or Hashimoto's thyroiditis?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 53,
+  "fields": {
+    "text": "Do you suffer from thalassemia, spherocytosis, aplastic anemia, hemophilia or blood clotting disorders?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 54,
+  "fields": {
+    "text": "Did you have thrombocytopenia in childhood, deficiency anemia, moderate blood count abnormalities?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 55,
+  "fields": {
+    "text": "Do you suffer from schizophrenia, bipolar affective disorder, personality and behavioral disorders?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 56,
+  "fields": {
+    "text": "Have you suffered from depression, neurasthenia?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 57,
+  "fields": {
+    "text": "Do you suffer from hyperthyroidism, diabetes, Cushing's disease?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 58,
+  "fields": {
+    "text": "Have you had Hashimoto's, hyperprolactinemia?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 59,
+  "fields": {
+    "text": "Do you suffer from polycystic kidney disease, glaucoma, osteoporosis, multiple surgical procedures?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 60,
+  "fields": {
+    "text": "Do you suffer from bronchial asthma, allergies, atopic dermatitis?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 61,
+  "fields": {
+    "text": "Are you taking medications that affect the hematopoietic system, cytostatics, immunosuppressants?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 62,
+  "fields": {
+    "text": "Are you taking any other medications used chronically?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 63,
+  "fields": {
+    "text": "Do you have a history of addiction to alcohol, drugs, medication?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 64,
+  "fields": {
+    "text": "Have you had years of sustained abstinence without a diagnosis of organ complications of addiction?",
+    "donation_type": "marrow"
+  }
+},
+{
+  "model": "donation.question",
+  "pk": 68,
+  "fields": {
+    "text": "Do you suffer from or have you suffered from one of the following conditions, or do you suffer from or have you suffered from the following ailments?\r\n(a) cardiovascular disease (hypertension), heart complaints, heart attack, shortness of breath, stroke\r\n(b) skin diseases, eczema/rash, allergies, hay fever, asthma.\r\n(c) diabetes, blood diseases, prolonged bleeding, vascular diseases, kidney diseases, gastrointestinal diseases, lung diseases, nervous diseases, thyroid diseases, epilepsy, cancer, osteomyelitis.\r\n(d) syphilis, gonorrhea, toxoplasmosis, brucellosis, tuberculosis, infectious mononucleosis.\r\n(e) Q fever, West Nile fever",
+    "donation_type": "blood"
+  }
+},
+{
+  "model": "donation.donation",
+  "pk": 1,
+  "fields": {
+    "donor": 3,
+    "donation_type": "blood",
+    "date": "2025-10-21"
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 1,
+  "fields": {
+    "donation": 1,
+    "question": 9,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 2,
+  "fields": {
+    "donation": 1,
+    "question": 10,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 3,
+  "fields": {
+    "donation": 1,
+    "question": 11,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 4,
+  "fields": {
+    "donation": 1,
+    "question": 12,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 5,
+  "fields": {
+    "donation": 1,
+    "question": 13,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 6,
+  "fields": {
+    "donation": 1,
+    "question": 14,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 7,
+  "fields": {
+    "donation": 1,
+    "question": 15,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 8,
+  "fields": {
+    "donation": 1,
+    "question": 16,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 9,
+  "fields": {
+    "donation": 1,
+    "question": 18,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 10,
+  "fields": {
+    "donation": 1,
+    "question": 19,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 11,
+  "fields": {
+    "donation": 1,
+    "question": 20,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 12,
+  "fields": {
+    "donation": 1,
+    "question": 21,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 13,
+  "fields": {
+    "donation": 1,
+    "question": 22,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 14,
+  "fields": {
+    "donation": 1,
+    "question": 23,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 15,
+  "fields": {
+    "donation": 1,
+    "question": 24,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 16,
+  "fields": {
+    "donation": 1,
+    "question": 25,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 17,
+  "fields": {
+    "donation": 1,
+    "question": 26,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 18,
+  "fields": {
+    "donation": 1,
+    "question": 27,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 19,
+  "fields": {
+    "donation": 1,
+    "question": 28,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 20,
+  "fields": {
+    "donation": 1,
+    "question": 29,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 21,
+  "fields": {
+    "donation": 1,
+    "question": 30,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 22,
+  "fields": {
+    "donation": 1,
+    "question": 31,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 23,
+  "fields": {
+    "donation": 1,
+    "question": 32,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 24,
+  "fields": {
+    "donation": 1,
+    "question": 33,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 25,
+  "fields": {
+    "donation": 1,
+    "question": 34,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 26,
+  "fields": {
+    "donation": 1,
+    "question": 35,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 27,
+  "fields": {
+    "donation": 1,
+    "question": 36,
+    "answer": false
+  }
+},
+{
+  "model": "donation.donationresponse",
+  "pk": 28,
+  "fields": {
+    "donation": 1,
+    "question": 68,
+    "answer": false
+  }
+}
+]

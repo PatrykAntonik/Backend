@@ -18,50 +18,40 @@ const extractErrorMessage = (error) => {
     const response = error?.response;
     const data = response?.data;
 
-    // No server response (network error, CORS, timeout)
     if (!response) {
         if (error?.message) return error.message;
-        try { return String(error); } catch { return 'Unexpected error'; }
+        try {
+            return String(error);
+        } catch {
+            return 'Unexpected error';
+        }
     }
 
-    // If backend returned plain text
-    if (typeof data === 'string') {
-        return data;
-    }
-
-    // Prefer common fields
+    if (typeof data === 'string') return data;
     if (data?.detail) return data.detail;
     if (data?.message) return data.message;
     if (data?.error) return data.error;
 
-    // Root-level array of errors
     if (Array.isArray(data) && data.length > 0) {
         const firstItem = data[0];
         if (typeof firstItem === 'string') return firstItem;
         if (firstItem?.message) return firstItem.message;
     }
 
-    // DRF validation error shape: { field: ["msg"] } or { non_field_errors: ["msg"] }
     if (data && typeof data === 'object') {
         const keys = Object.keys(data);
         for (const key of keys) {
             const value = data[key];
             if (Array.isArray(value) && value.length > 0) {
                 const firstValue = value[0];
-                if (typeof firstValue === 'string') {
-                    return key === 'non_field_errors' ? firstValue : `${key}: ${firstValue}`;
-                }
-                if (firstValue?.message) {
-                    return key === 'non_field_errors' ? firstValue.message : `${key}: ${firstValue.message}`;
-                }
+                if (typeof firstValue === 'string') return firstValue;
+                if (firstValue?.message) return firstValue.message;
             }
-            if (typeof value === 'string' && value) {
-                return key === 'non_field_errors' ? value : `${key}: ${value}`;
-            }
+            if (typeof value === 'string' && value) return value;
+            if (value?.message) return value.message;
         }
     }
 
-    // Fallbacks
     if (response?.statusText) return response.statusText;
     return error?.message || 'Unexpected error';
 }
@@ -226,5 +216,5 @@ export const listUsers = () => async (dispatch, getState) => {
             type: USER_LIST_FAIL,
             payload: extractErrorMessage(error),
         })
-}
+    }
 }

@@ -45,7 +45,8 @@ function Questions() {
 
             {loadingQuestions ? <Loader/> :
                 errorQuestions ? <Message severity="error">{errorQuestions}</Message> :
-                    <List sx={{width: '100%', bgcolor: 'rgba(255,255,255,0.9)'}} component="nav" aria-label="questions list">
+                    <List sx={{width: '100%', bgcolor: 'custom.baseWhite'}} component="nav"
+                          aria-label="questions list">
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>
@@ -63,7 +64,7 @@ function Questions() {
                             ))
                         ) : (
                             <ListItem>
-                                <ListItemText sx={{color: 'white'}}
+                                <ListItemText sx={{color: 'black'}}
                                               primary="No questions found for this donation type."/>
                             </ListItem>
                         )}

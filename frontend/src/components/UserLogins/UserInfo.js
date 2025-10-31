@@ -49,7 +49,7 @@ function UserInfo() {
     const {userInfo} = userLogin
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const {success} = userUpdateProfile
+    const {success, error: updateError, loading: updateLoading} = userUpdateProfile
 
     const isHospital = user.is_hospital;
 
@@ -139,14 +139,23 @@ function UserInfo() {
                 website_url: website_url,
                 is_hospital: is_hospital
             }))
-            setTimeout(() => setShowSuccessAlert(true), 0);
         }
     }
+
+    useEffect(() => {
+        if (success) {
+            setShowSuccessAlert(true);
+            setPassword('');
+            setConfirmPassword('');
+        }
+    }, [success]);
 
 
     return (
         <Box>
+            {updateLoading && <Loader/>}
             {message && <Message variant="error">{message}</Message>}
+            {updateError && <Message variant="error">{updateError}</Message>}
             {error && <Message variant="error">{error}</Message>}
             {showSuccessAlert && <Message severity="success">Profile Updated</Message>}
             <Container maxWidth="sm">
@@ -157,7 +166,7 @@ function UserInfo() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        backgroundColor: 'custom.baseWhite',
                         borderRadius: 5,
                         padding: 5
                     }}

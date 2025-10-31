@@ -94,7 +94,7 @@ export default function PersistentDrawerLeft() {
     const dispatch = useDispatch();
     const userDetails = useSelector(state => state.userDetails)
     const {error, loading, user} = userDetails
-    const isHospital = user.is_hospital;
+    const isHospital = userInfo?.is_hospital;
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
