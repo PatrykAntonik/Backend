@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -29,21 +30,23 @@ class DonationListView(generics.ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def getDonation(request, pk):
-    donation = Donation.objects.get(id=pk)
-    serializer = DonationSerializer(donation, many=False)
-    return Response(serializer.data)
+class DonationDetailView(generics.RetrieveAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Donation.objects.all()
+        return Donation.objects.filter(donor=user)
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def getMyDonations(request):
-    user = request.user
-    donations = user.donation_set.all()
-    serializer = DonationSerializer(donations, many=True)
-    return Response(serializer.data)
+class MyDonationsView(generics.ListAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Donation.objects.filter(donor=self.request.user)
 
 
 @api_view(["GET"])
