@@ -150,6 +150,36 @@ class DonationSerializer(serializers.ModelSerializer):
         return obj.id
 
 
+class DonationCreateSerializer(serializers.ModelSerializer):
+    """Serialize donation creation payload with nested responses."""
+
+    responses = serializers.ListField(
+        child=serializers.DictField(), write_only=True, required=False
+    )
+
+    class Meta:
+        model = Donation
+        fields = ["donation_type", "responses"]
+
+    def create(self, validated_data):
+        responses = validated_data.pop("responses", [])
+        request = self.context.get("request")
+        donation = Donation.objects.create(donor=request.user, **validated_data)
+
+        for response in responses:
+            question_id = response.get("question_id")
+            answer = response.get("answer")
+            if question_id and Question.objects.filter(id=question_id).exists():
+                DonationResponse.objects.create(
+                    donation=donation, question_id=question_id, answer=answer
+                )
+
+        return donation
+
+    def to_representation(self, instance):
+        return DonationSerializer(instance, context=self.context).data
+
+
 class QuestionSerializer(serializers.ModelSerializer):
     """Serializer for the Question model."""
 

@@ -17,12 +17,15 @@ function DonationDetail() {
     const donationDetails = useSelector((state) => state.donationDetails);
     const {loading, error, donation} = donationDetails;
 
+    const userLogin = useSelector(state => state.userLogin);
+    const {userInfo} = userLogin;
+
     const questionList = useSelector((state) => state.question);
     const {questions} = questionList;
 
     const userDetails = useSelector(state => state.userDetails)
     const {user} = userDetails
-    const isHospital = user.is_hospital;
+    const isHospital = userInfo?.is_hospital;
 
     const donationResponses = useSelector(state => state.donationResponses);
     const {responses} = donationResponses;

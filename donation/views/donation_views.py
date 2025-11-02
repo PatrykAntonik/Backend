@@ -70,25 +70,23 @@ def getDonationTypeQuestions(request, donation_id):
     return Response(serializer.data)
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def getMyResponses(request):
-    user = request.user
-    donations = Donation.objects.filter(donor=user)
-    responses = DonationResponse.objects.filter(donation__in=donations)
-    serializer = ResponseSerializer(responses, many=True)
-    return Response(serializer.data)
+class MyResponsesView(generics.ListAPIView):
+    serializer_class = ResponseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        donations = Donation.objects.filter(donor=user)
+        return DonationResponse.objects.filter(donation__in=donations)
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def getDonationResponses(request, donation_id):
-    try:
-        responses = DonationResponse.objects.filter(donation_id=donation_id)
-        serializer = ResponseSerializer(responses, many=True)
-        return Response(serializer.data)
-    except DonationResponse.DoesNotExist:
-        return Response({"detail": "This donation has no responses"}, status=404)
+class DonationResponsesView(generics.ListAPIView):
+    serializer_class = ResponseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        donation_id = self.kwargs.get("donation_id")
+        return DonationResponse.objects.filter(donation_id=donation_id)
 
 
 @api_view(["POST"])
