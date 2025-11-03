@@ -1,7 +1,7 @@
 from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -66,28 +66,16 @@ class MyDonationListView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
 
-@api_view(["GET"])
-def getQuestions(request):
-    donation_type = request.query_params.get("donation_type", None)
-    if donation_type:
-        questions = Question.objects.filter(donation_type=donation_type)
-    else:
-        questions = Question.objects.all()
+class DonationQuestionListView(generics.ListAPIView):
+    serializer_class = QuestionSerializer
+    permission_classes = [AllowAny]
 
-    serializer = QuestionSerializer(questions, many=True)
-    return Response(serializer.data)
-
-
-@api_view(["GET"])
-def getDonationTypeQuestions(request, donation_id):
-    try:
-        donation = Donation.objects.get(id=donation_id)
-    except Donation.DoesNotExist:
-        raise Http404
-
-    questions = Question.objects.filter(donation_type=donation.donation_type)
-    serializer = QuestionSerializer(questions, many=True)
-    return Response(serializer.data)
+    def get_queryset(self):
+        donation_type = self.request.query_params.get("donation_type")
+        queryset = Question.objects.all()
+        if donation_type:
+            queryset = queryset.filter(donation_type=donation_type)
+        return queryset
 
 
 class MyResponsesView(generics.ListAPIView):

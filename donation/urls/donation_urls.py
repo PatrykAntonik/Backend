@@ -3,11 +3,11 @@ from django.urls import path
 from donation.views.donation_views import (
     DonationDetailView,
     DonationListView,
+    DonationQuestionListView,
     DonationResponsesView,
     MyDonationListView,
     MyResponsesView,
     getDonationTypeQuestions,
-    getQuestions,
 )
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
         getDonationTypeQuestions,
         name="donation-questions",
     ),
-    path("questions/", getQuestions, name="questions"),
+    path("questions/", DonationQuestionListView.as_view(), name="questions"),
     path("myresponses/", MyResponsesView.as_view(), name="myresponses"),
     path(
         "<int:donation_id>/responses/",
