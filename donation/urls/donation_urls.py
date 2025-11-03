@@ -7,17 +7,11 @@ from donation.views.donation_views import (
     DonationResponsesView,
     MyDonationListView,
     MyResponsesView,
-    getDonationTypeQuestions,
 )
 
 
 urlpatterns = [
     path("", DonationListView.as_view(), name="donations"),
-    path(
-        "<int:donation_id>/questions/",
-        getDonationTypeQuestions,
-        name="donation-questions",
-    ),
     path("questions/", DonationQuestionListView.as_view(), name="questions"),
     path("myresponses/", MyResponsesView.as_view(), name="myresponses"),
     path(
