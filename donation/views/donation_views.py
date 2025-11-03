@@ -23,7 +23,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-@permission_classes([IsAdminUser])
 class DonationListView(generics.ListAPIView):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
@@ -41,12 +40,25 @@ class DonationDetailView(generics.RetrieveAPIView):
         return Donation.objects.filter(donor=user)
 
 
-class MyDonationsView(generics.ListAPIView):
+class MyDonationListView(generics.ListCreateAPIView):
     serializer_class = DonationSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Donation.objects.filter(donor=self.request.user)
+
+    def get_serializer_class(self):
+        request = getattr(self, "request", None)
+        if request and request.method == "POST":
+            return DonationCreateSerializer
+        return DonationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK, headers=headers)
 
 
 @api_view(["GET"])
@@ -90,34 +102,6 @@ class DonationResponsesView(generics.ListAPIView):
     def get_queryset(self):
         donation_id = self.kwargs.get("donation_id")
         return DonationResponse.objects.filter(donation_id=donation_id)
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def createDonation(request):
-    data = request.data
-    user = request.user
-
-    try:
-        donation = Donation.objects.create(
-            donor=user, donation_type=data["donation_type"]
-        )
-
-        responses = data.get("responses", [])
-        for response in responses:
-            question_id = response.get("question_id")
-            answer = response.get("answer")
-
-            if Question.objects.filter(id=question_id).exists():
-                DonationResponse.objects.create(
-                    donation=donation, question_id=question_id, answer=answer
-                )
-
-        serializer = DonationSerializer(donation)
-        return Response(serializer.data)
-
-    except Exception as e:
-        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])

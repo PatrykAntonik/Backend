@@ -159,7 +159,7 @@ export const createDonationWithResponses = (donationData) => async (dispatch, ge
         };
 
         const {data: donation} = await api.post(
-            `/api/donations/create/`,
+            `/api/donations/mydonations/`,
             requestData,
             config
         );

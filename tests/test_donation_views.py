@@ -62,7 +62,7 @@ class TestDonationViews:
 
     def test_create_donation(self, api_client, user, question):
         api_client.force_authenticate(user=user)
-        url = "/api/donations/create/"
+        url = "/api/donations/mydonations/"
         data = {
             "donation_type": "blood",
             "responses": [{"question_id": question.id, "answer": True}],
