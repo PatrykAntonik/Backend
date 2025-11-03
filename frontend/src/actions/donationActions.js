@@ -189,7 +189,7 @@ export const deleteDonation = (id) => async (dispatch, getState) => {
             },
         };
 
-        await api.delete(`/api/donations/${id}/delete/`, config);
+        await api.delete(`/api/donations/${id}/`, config);
 
         dispatch({ type: 'DONATION_DELETE_SUCCESS' });
     } catch (error) {

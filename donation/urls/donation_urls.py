@@ -6,7 +6,6 @@ from donation.views.donation_views import (
     DonationResponsesView,
     MyDonationListView,
     MyResponsesView,
-    deleteDonation,
     getDonationTypeQuestions,
     getQuestions,
 )
@@ -27,6 +26,5 @@ urlpatterns = [
         name="donation-responses",
     ),
     path("mydonations/", MyDonationListView.as_view(), name="mydonations"),
-    path("<int:pk>/delete/", deleteDonation, name="delete-donation"),
     path("<str:pk>/", DonationDetailView.as_view(), name="donation"),
 ]

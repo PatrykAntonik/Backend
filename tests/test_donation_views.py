@@ -73,7 +73,7 @@ class TestDonationViews:
 
     def test_delete_donation(self, api_client, user, donation):
         api_client.force_authenticate(user=user)
-        url = f"/api/donations/{donation.id}/delete/"
+        url = f"/api/donations/{donation.id}/"
         response = api_client.delete(url)
         assert response.status_code == status.HTTP_200_OK
         assert Donation.objects.count() == 0

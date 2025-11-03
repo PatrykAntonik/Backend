@@ -1,6 +1,6 @@
 from django.http import Http404
 from rest_framework import generics, status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -29,7 +29,7 @@ class DonationListView(generics.ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class DonationDetailView(generics.RetrieveAPIView):
+class DonationDetailView(generics.RetrieveDestroyAPIView):
     serializer_class = DonationSerializer
     permission_classes = [IsAuthenticated]
 
@@ -38,6 +38,11 @@ class DonationDetailView(generics.RetrieveAPIView):
         if user.is_staff:
             return Donation.objects.all()
         return Donation.objects.filter(donor=user)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"detail": "Donation deleted"}, status=status.HTTP_200_OK)
 
 
 class MyDonationListView(generics.ListCreateAPIView):
@@ -102,14 +107,3 @@ class DonationResponsesView(generics.ListAPIView):
     def get_queryset(self):
         donation_id = self.kwargs.get("donation_id")
         return DonationResponse.objects.filter(donation_id=donation_id)
-
-
-@api_view(["DELETE"])
-@permission_classes([IsAuthenticated])
-def deleteDonation(request, pk):
-    try:
-        donation = Donation.objects.get(id=pk, donor=request.user)
-        donation.delete()
-        return Response({"detail": "Donation deleted"})
-    except Donation.DoesNotExist:
-        return Response({"detail": "Donation not found"}, status=404)
