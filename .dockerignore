@@ -8,13 +8,14 @@ docker-compose.yml
 
 frontend/
 infra/
-docs/
 tests/
 
 pytest.ini
 Makefile
 pre-commit-config.yaml
 .pylintrc
+staticfiles
+static
 
 AGENTS.md
 GEMINI.md

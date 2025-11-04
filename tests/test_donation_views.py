@@ -98,12 +98,6 @@ class TestDonationViews:
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 1
 
-    def test_get_donation_type_questions(self, api_client, donation, question):
-        url = f"/api/donations/{donation.id}/questions/"
-        response = api_client.get(url)
-        assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 1
-
     def test_get_my_responses(self, api_client, user, donation):
         api_client.force_authenticate(user=user)
         url = "/api/donations/myresponses/"

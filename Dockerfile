@@ -11,26 +11,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
     && rm -rf /var/lib/apt/lists/* && pip install --no-cache-dir poetry
 
 COPY pyproject.toml poetry.lock* README.md ./
-
 RUN poetry install --no-root --only main
+
+COPY . .
+RUN poetry run python manage.py collectstatic --noinput
 
 FROM python:3.12-slim AS runner
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONUNBUFFERED=1 \
     POETRY_NO_INTERACTION=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
+COPY --from=builder /app/staticfiles/ /app/staticfiles/
 
 WORKDIR /app
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["gunicorn","transplantApp.wsgi:application","--bind","0.0.0.0:8000"]
+CMD ["gunicorn","transplantApp.wsgi:application","--bind","0.0.0.0:8080"]
 
 FROM python:3.12-slim AS dev-builder
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -64,6 +69,6 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["gunicorn","transplantApp.wsgi:application","--bind","0.0.0.0:8000"]
+CMD ["gunicorn","transplantApp.wsgi:application","--bind","0.0.0.0:8080"]
