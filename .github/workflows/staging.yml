@@ -91,14 +91,14 @@ jobs:
           cache-to: type=gha,mode=max,scope=backend
       - name: Run container
         run: docker run -d \
-          --name ${{ env.IMAGE_NAME }} \
-          -p 8080:8080 \
-          --health-cmd "curl -f http://localhost:8080/health/" \
-          --health-interval 5s \
-          --health-timeout 3s \
-          --health-retries 5 \
-          -e DATABASE_URL=${{ env.DATABASE_URL }} \
-          ${{ env.IMAGE_NAME }}:dev
+              --name ${{ env.IMAGE_NAME }} \
+              -p 8080:8080 \
+              --health-cmd "curl -f http://localhost:8080/health/" \
+              --health-interval 5s \
+              --health-timeout 3s \
+              --health-retries 5 \
+              -e DATABASE_URL=${{ env.DATABASE_URL }} \
+              ${{ env.IMAGE_NAME }}:dev
       - name: Check container health
         run: |
           for i in {1..15}; do
