@@ -11,7 +11,7 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 POSTGRES_DB = os.getenv("POSTGRES_DB")
 DB_HOST = os.getenv("DB_HOST", "localhost")
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret_manager-key")
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 if DEBUG:
