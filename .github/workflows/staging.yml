@@ -21,6 +21,7 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   DOCKER_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_REPO_NAME: ${{ vars.DOCKER_USERNAME }}/${{ vars.IMAGE_NAME }}
 jobs:
   test:
     if: ${{ !github.event.inputs.skip_lint }}
@@ -119,6 +120,7 @@ jobs:
         if: always()
         run: docker rm -f ${{ env.IMAGE_NAME }}
   build:
+    name: Build image and push to Docker Hub
     needs: test
     runs-on: ubuntu-latest
     permissions:
@@ -141,8 +143,8 @@ jobs:
           target: dev-runner
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:dev
-            ${{ env.IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:dev-${{ github.run_number }}
+            ${{ env.DOCKER_REPO_NAME }}:dev
+            ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.sha }}
+            ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.run_number }}
           cache-from: type=gha,scope=backend
           cache-to: type=gha,mode=max,scope=backend
