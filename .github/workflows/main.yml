@@ -130,6 +130,7 @@ jobs:
         with:
           service: ${{ vars.GCP_SERVICE_NAME }}
           image: ${{ env.DOCKER_REPO_NAME }}:latest
+          region: ${{ vars.GCP_REGION }}
           flags: |
             --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
           secrets: |
