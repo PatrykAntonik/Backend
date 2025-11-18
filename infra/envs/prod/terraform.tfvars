@@ -10,7 +10,7 @@ service_account_roles = [
   "roles/secretmanager.secretVersionAdder"
 ]
 database_url_secret_id      = "database-url"
-django_secret_key_secret_id = "django-secret"
+django_secret_key_secret_id = "secret-key"
 api_service_name            = "transplant-api"
 api_allow_unauthenticated   = true
 api_service_description     = "Transplant App API Service"

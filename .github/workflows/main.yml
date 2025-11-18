@@ -5,7 +5,134 @@ on:
     branches:
       - main
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  DOCKER_BUILDKIT: 1
+  DOCKER_BUILDKIT_PROGRESS: plain
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  DOCKER_REPO_NAME: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
 jobs:
   test:
+    name: Health check
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: transplant_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d transplant_db"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/transplant_db?sslmode=disable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          target: runner
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          cache-from: type=gha,scope=prod
+          cache-to: type=gha,mode=max,scope=prod
+      - name: Run container
+        run: |
+          docker run -d \
+            --name ${{ env.IMAGE_NAME }} \
+            -p 8080:8080 \
+            --health-cmd "curl -f http://localhost:8080/health/" \
+            --health-interval 5s \
+            --health-timeout 3s \
+            --health-retries 5 \
+            -e "DATABASE_URL=${{ env.DATABASE_URL }}" \
+            -e "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1" \
+            ${{ env.IMAGE_NAME }}:latest
+      - name: Check container health
+        run: |
+          for i in {1..15}; do
+            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }})
+            if [ "$STATUS" = "\"healthy\"" ]; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "API failed to start"
+          docker logs ${{ env.IMAGE_NAME }}
+          exit 1
+      - name: Stop container
+        if: always()
+        run: docker rm -f ${{ env.IMAGE_NAME }}
+  build:
+    name: Build image and push to Docker Hub
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runner
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:${{ github.run_number }}
+          cache-from: type=gha,scope=prod
+          cache-to: type=gha,mode=max,scope=prod
+  deploy:
+    name: Deploy to Cloud Run
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+      - name: Update Secrets in Secret Manager
+        run: |
+          echo -n "${{ secrets.DATABASE_URL }}" | \
+          gcloud secrets versions add database-url --data-file=-
+          echo -n "${{ secrets.SECRET_KEY }}" | \
+          gcloud secrets versions add secret-key --data-file=-
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v3
+        with:
+          service: ${{ env.IMAGE_NAME }}
+          image: ${{ env.DOCKER_REPO_NAME }}:latest
+          secrets: |
+            DATABASE_URL=database-url:latest
+            SECRET_KEY=secret-key:latest

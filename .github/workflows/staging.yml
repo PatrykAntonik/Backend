@@ -90,8 +90,8 @@ jobs:
             ${{ env.IMAGE_NAME }}:dev
             ${{ env.IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.IMAGE_NAME }}:dev-${{ github.run_number }}
-          cache-from: type=gha,scope=backend
-          cache-to: type=gha,mode=max,scope=backend
+          cache-from: type=gha,scope=dev
+          cache-to: type=gha,mode=max,scope=dev
       - name: Run container
         run: |
           docker run -d \
@@ -146,5 +146,5 @@ jobs:
             ${{ env.DOCKER_REPO_NAME }}:dev
             ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.sha }}
             ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.run_number }}
-          cache-from: type=gha,scope=backend
-          cache-to: type=gha,mode=max,scope=backend
+          cache-from: type=gha,scope=dev
+          cache-to: type=gha,mode=max,scope=dev
