@@ -44,10 +44,6 @@ jobs:
           context: .
           load: true
           target: runner
-          tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:${{ github.run_number }}
           cache-from: type=gha,scope=prod
           cache-to: type=gha,mode=max,scope=prod
       - name: Run container
@@ -101,9 +97,9 @@ jobs:
           target: runner
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:${{ github.run_number }}
+            ${{ env.DOCKER_REPO_NAME }}:latest
+            ${{ env.DOCKER_REPO_NAME }}:${{ github.sha }}
+            ${{ env.DOCKER_REPO_NAME }}:${{ github.run_number }}
           cache-from: type=gha,scope=prod
           cache-to: type=gha,mode=max,scope=prod
   deploy:

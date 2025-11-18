@@ -86,10 +86,6 @@ jobs:
           context: .
           load: true
           target: dev-runner
-          tags: |
-            ${{ env.IMAGE_NAME }}:dev
-            ${{ env.IMAGE_NAME }}:dev-${{ github.sha }}
-            ${{ env.IMAGE_NAME }}:dev-${{ github.run_number }}
           cache-from: type=gha,scope=dev
           cache-to: type=gha,mode=max,scope=dev
       - name: Run container
