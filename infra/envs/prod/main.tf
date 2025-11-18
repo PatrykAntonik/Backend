@@ -35,11 +35,6 @@ module "django_secret_key" {
   secret_id = var.django_secret_key_secret_id
 }
 
-module "django_allowed_hosts" {
-  source    = "../../modules/secret_manager"
-  secret_id = var.django_allowed_hosts_secret_id
-}
-
 module "transplant_api" {
   source                = "../../modules/cloud_run"
   service_name          = var.api_service_name
