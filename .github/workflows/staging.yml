@@ -1,5 +1,5 @@
 name: CI/CD pipeline for staging branches
-run-name: ${{ github.actor }}
+run-name: ${{ github.ref_name }} - ${{ github.sha }}
 on:
   push:
     branches-ignore:
