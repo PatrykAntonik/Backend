@@ -38,6 +38,11 @@ variable "django_secret_key_secret_id" {
   description = "Secret Manager ID that stores the Django SECRET_KEY"
 }
 
+variable "django_allowed_hosts_secret_id" {
+  type        = string
+  description = "Secret Manager ID that stores the Django ALLOWED_HOSTS"
+}
+
 variable "api_service_name" {
   type        = string
   description = "Cloud Run service name for the API"

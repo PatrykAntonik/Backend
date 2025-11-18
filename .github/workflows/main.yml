@@ -125,6 +125,8 @@ jobs:
           gcloud secrets versions add database-url --data-file=-
           echo -n "${{ secrets.SECRET_KEY }}" | \
           gcloud secrets versions add secret-key --data-file=-
+          echo -n "${{ secrets.DJANGO_ALLOWED_HOSTS }}" | \
+          gcloud secrets versions add allowed-hosts --data-file=-
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v3
         with:
@@ -136,3 +138,4 @@ jobs:
           secrets: |
             DATABASE_URL=database-url:latest
             SECRET_KEY=secret-key:latest
+            DJANGO_ALLOWED_HOSTS=allowed-hosts:latest

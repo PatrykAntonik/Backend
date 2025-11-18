@@ -9,11 +9,12 @@ service_account_roles = [
   "roles/secretmanager.secretAccessor",
   "roles/secretmanager.secretVersionAdder"
 ]
-database_url_secret_id      = "database-url"
-django_secret_key_secret_id = "secret-key"
-api_service_name            = "transplant-api"
-api_allow_unauthenticated   = true
-api_service_description     = "Transplant App API Service"
-web_service_name            = "transplant-web"
-web_allow_unauthenticated   = true
-web_service_description     = "Transplant App Frontend Service"
+database_url_secret_id         = "database-url"
+django_secret_key_secret_id    = "secret-key"
+django_allowed_hosts_secret_id = "allowed-hosts"
+api_service_name               = "transplant-api"
+api_allow_unauthenticated      = true
+api_service_description        = "Transplant App API Service"
+web_service_name               = "transplant-web"
+web_allow_unauthenticated      = true
+web_service_description        = "Transplant App Frontend Service"
