@@ -44,6 +44,8 @@ jobs:
           context: .
           load: true
           target: runner
+          tags: |
+            ${{ env.IMAGE_NAME }}:prod
           cache-from: type=gha,scope=prod
           cache-to: type=gha,mode=max,scope=prod
       - name: Run container

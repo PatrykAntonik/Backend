@@ -86,6 +86,8 @@ jobs:
           context: .
           load: true
           target: dev-runner
+          tags: |
+            ${{ env.IMAGE_NAME }}:dev
           cache-from: type=gha,scope=dev
           cache-to: type=gha,mode=max,scope=dev
       - name: Run container
