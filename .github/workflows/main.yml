@@ -131,7 +131,8 @@ jobs:
         with:
           service: ${{ env.IMAGE_NAME }}
           image: ${{ env.DOCKER_REPO_NAME }}:latest
-          service_account: transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
+          flags: |
+            --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
           secrets: |
             DATABASE_URL=database-url:latest
             SECRET_KEY=secret-key:latest
