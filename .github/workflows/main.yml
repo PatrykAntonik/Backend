@@ -11,7 +11,6 @@ env:
   DOCKER_BUILDKIT: 1
   DOCKER_BUILDKIT_PROGRESS: plain
   COMPOSE_DOCKER_CLI_BUILD: 1
-  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   DOCKER_REPO_NAME: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
 jobs:
   test:
@@ -45,13 +44,13 @@ jobs:
           load: true
           target: runner
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ vars.IMAGE_NAME }}:latest
           cache-from: type=gha,scope=prod
           cache-to: type=gha,mode=max,scope=prod
       - name: Run container
         run: |
           docker run -d \
-            --name ${{ env.IMAGE_NAME }} \
+            --name ${{ vars.IMAGE_NAME }} \
             -p 8080:8080 \
             --health-cmd "curl -f http://localhost:8080/health/" \
             --health-interval 5s \
@@ -59,7 +58,7 @@ jobs:
             --health-retries 5 \
             -e "DATABASE_URL=${{ env.DATABASE_URL }}" \
             -e "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1" \
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ vars.IMAGE_NAME }}:latest
       - name: Check container health
         run: |
           for i in {1..15}; do
@@ -70,11 +69,11 @@ jobs:
             sleep 3
           done
           echo "API failed to start"
-          docker logs ${{ env.IMAGE_NAME }}
+          docker logs ${{ vars.IMAGE_NAME }}
           exit 1
       - name: Stop container
         if: always()
-        run: docker rm -f ${{ env.IMAGE_NAME }}
+        run: docker rm -f ${{ vars.IMAGE_NAME }}
   build:
     name: Build image and push to Docker Hub
     needs: test
@@ -129,7 +128,7 @@ jobs:
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v3
         with:
-          service: ${{ env.IMAGE_NAME }}
+          service: ${{ vars.GCP_SERVICE_NAME }}
           image: ${{ env.DOCKER_REPO_NAME }}:latest
           flags: |
             --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
