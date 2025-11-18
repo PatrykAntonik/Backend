@@ -62,7 +62,7 @@ jobs:
       - name: Check container health
         run: |
           for i in {1..15}; do
-            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }})
+            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ vars.IMAGE_NAME }})
             if [ "$STATUS" = "\"healthy\"" ]; then
               exit 0
             fi
