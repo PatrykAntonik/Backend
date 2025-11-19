@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'frontend/**'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -135,6 +137,8 @@ jobs:
             DJANGO_ALLOWED_HOSTS=${{ vars.DJANGO_ALLOWED_HOSTS }}
           flags: |
             --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
+            --max-instances=1
+            --min-instances=0
           secrets: |
             DATABASE_URL=database-url:latest
             SECRET_KEY=secret-key:latest

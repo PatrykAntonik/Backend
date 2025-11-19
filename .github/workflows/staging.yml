@@ -4,6 +4,8 @@ on:
   push:
     branches-ignore:
       - main
+    paths-ignore:
+      - 'frontend/**'
   workflow_dispatch:
     inputs:
       skip_lint:
