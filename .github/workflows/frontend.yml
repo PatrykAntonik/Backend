@@ -67,6 +67,8 @@ jobs:
           service: ${{ vars.FRONT_GCP_SERVICE_NAME }}
           image: ${{ env.DOCKER_REPO_NAME }}:latest
           region: ${{ vars.GCP_REGION }}
+          env_vars: |
+            REACT_APP_API_URL=${{ vars.REACT_APP_API_URL }}
           flags: |
             --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
             --max-instances=1
