@@ -135,6 +135,7 @@ jobs:
           region: ${{ vars.GCP_REGION }}
           env_vars: |
             DJANGO_ALLOWED_HOSTS=${{ vars.DJANGO_ALLOWED_HOSTS }}
+            DJANGO_CORS_ALLOWED_ORIGINS=${{ vars.DJANGO_CORS_ALLOWED_ORIGINS }}
           flags: |
             --service-account=transplant-app-service-account@transplant-app-477411.iam.gserviceaccount.com
             --max-instances=1
