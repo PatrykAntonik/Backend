@@ -23,7 +23,7 @@ COPY --chown=nginx:nginx --from=builder /app/build /usr/share/nginx/html
 
 EXPOSE 8080
 
-CMD ["/bin/sh", "-c", "envsubst '$PORT' < /etc/nginx/nginx.conf > /tmp/nginx.conf && exec nginx -c /tmp/nginx.conf -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "envsubst '8080' < /etc/nginx/nginx.conf > /tmp/nginx.conf && exec nginx -c /tmp/nginx.conf -g 'daemon off;'"]
 
 
 FROM node:24.10.0-alpine AS dev-runner
