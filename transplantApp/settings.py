@@ -14,7 +14,7 @@ DB_HOST = os.getenv("DB_HOST", "localhost")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret_manager-key")
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
-if not DEBUG:
+if DEBUG:
     ALLOWED_HOSTS = ["*"]
     CORS_ALLOW_ALL_ORIGINS = True
 else:
