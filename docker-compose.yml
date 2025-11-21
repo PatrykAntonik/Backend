@@ -50,6 +50,8 @@ services:
       - "3000:8080"
     image: transplant-web-image
     container_name: transplant-web
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000}
     depends_on:
       api:
         condition: service_healthy
