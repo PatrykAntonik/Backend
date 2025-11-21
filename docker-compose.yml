@@ -47,7 +47,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "3000:8080"
+      - "3000:3000"
     image: transplant-web-image
     container_name: transplant-web
     environment:
