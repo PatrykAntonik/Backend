@@ -2,8 +2,6 @@ services:
   db:
     image: postgres:16.9-alpine
     container_name: transplant-db
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: transplant_db
       POSTGRES_USER: postgres
@@ -30,8 +28,6 @@ services:
       - "8000:8080"
     image: transplant-api-image
     container_name: transplant-api
-    env_file:
-      - .env
     environment:
       - POSTGRES_DB=transplant_db
       - POSTGRES_USER=postgres
@@ -54,8 +50,6 @@ services:
       - "3000:8080"
     image: transplant-web-image
     container_name: transplant-web
-    env_file:
-      - ./frontend/.env
     depends_on:
       api:
         condition: service_healthy
