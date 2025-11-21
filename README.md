@@ -50,6 +50,14 @@ pip install -r requirements.txt
 |   6 | django-phone-field              | ^1.8.1  |
 |   7 | django-phonenumber-field        | ^5.0.0  |
 
+#### Configure frontend environment file
+
+Copy the provided example before running any services (it is ignored by git):
+
+```bash
+cp frontend/.env.example frontend/.env
+```
+
 #### Install React dependencies:
 
 ```bash
@@ -123,4 +131,3 @@ http://localhost:8000/admin/
 ### License
 
 TransplantApp is MIT licensed. See LICENSE for details.
-

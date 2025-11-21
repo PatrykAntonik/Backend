@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - 'frontend/**'
       - '.github/workflows/frontend.yml'
-      - 'docker-compose.yml'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
