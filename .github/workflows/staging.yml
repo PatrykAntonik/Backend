@@ -1,0 +1,151 @@
+name: CI/CD pipeline for staging branches
+run-name: ${{ github.ref_name }} - ${{ github.sha }}
+on:
+  push:
+    branches-ignore:
+      - main
+    paths-ignore:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+  workflow_dispatch:
+    inputs:
+      skip_lint:
+        description: "Skip lint stage"
+        type: boolean
+        required: false
+        default: false
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  DOCKER_BUILDKIT: 1
+  DOCKER_BUILDKIT_PROGRESS: plain
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_REPO_NAME: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
+jobs:
+  test:
+    if: ${{ !github.event.inputs.skip_lint }}
+    name: Test, lint and format
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: transplant_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d transplant_db"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/transplant_db?sslmode=disable
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Configure Poetry venv
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+      - name: Check code formatting
+        run: poetry run black transplantApp donation --check
+      - name: Check import sorting
+        run: poetry run isort -c donation transplantApp
+      - name: Check code linting
+        run: poetry run pylint --fail-under=8.0 donation transplantApp
+      - name: Run tests
+        id: tests
+        continue-on-error: true
+        run: poetry run pytest -n auto --html=pytest-report.html --self-contained-html
+      - name: Upload pytest report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pytest-report
+          path: pytest-report.html
+          retention-days: 7
+      - name: Fail if tests failed
+        if: ${{ steps.tests.outcome == 'failure' }}
+        run: exit 1
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          target: dev-runner
+          tags: |
+            ${{ env.IMAGE_NAME }}:dev
+          cache-from: type=gha,scope=dev
+          cache-to: type=gha,mode=max,scope=dev
+      - name: Run container
+        run: |
+          docker run -d \
+            --name ${{ env.IMAGE_NAME }} \
+            -p 8080:8080 \
+            --health-cmd "curl -f http://localhost:8080/health/" \
+            --health-interval 5s \
+            --health-timeout 3s \
+            --health-retries 5 \
+            -e "DATABASE_URL=${{ env.DATABASE_URL }}" \
+            -e "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1" \
+            ${{ env.IMAGE_NAME }}:dev
+      - name: Check container health
+        run: |
+          for i in {1..15}; do
+            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }})
+            if [ "$STATUS" = "\"healthy\"" ]; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "API failed to start"
+          docker logs ${{ env.IMAGE_NAME }}
+          exit 1
+      - name: Stop container
+        if: always()
+        run: docker rm -f ${{ env.IMAGE_NAME }}
+  build:
+    name: Build image and push to Docker Hub
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: dev-runner
+          push: true
+          tags: |
+            ${{ env.DOCKER_REPO_NAME }}:dev
+            ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.sha }}
+            ${{ env.DOCKER_REPO_NAME }}:dev-${{ github.run_number }}
+          cache-from: type=gha,scope=dev
+          cache-to: type=gha,mode=max,scope=dev

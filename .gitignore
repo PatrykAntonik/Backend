@@ -2,8 +2,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-static/
-
 data/
 
 *.log
@@ -25,3 +23,6 @@ AGENTS.md
 node_modules/
 
 data.json
+
+.terraform/
+.terraform.lock.hcl

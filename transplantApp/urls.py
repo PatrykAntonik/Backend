@@ -18,6 +18,6 @@ urlpatterns = [
     path("api/users/", include("donation.urls.user_urls")),
     path("api/schema", SpectacularAPIView.as_view(), name="schema"),
     path("api/schema/redoc/", SpectacularRedocView.as_view(), name="redoc"),
-    path("api/", SpectacularSwaggerView.as_view(), name="docs"),
+    path("", SpectacularSwaggerView.as_view(), name="docs"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

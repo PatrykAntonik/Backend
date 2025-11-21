@@ -8,6 +8,7 @@ import {
     QUESTION_REQUEST, QUESTION_SUCCESS, QUESTION_FAIL,
 
     DONATION_CREATE_REQUEST, DONATION_CREATE_SUCCESS, DONATION_CREATE_FAIL,
+    DONATION_CREATE_RESET,
     DONATION_DELETE_REQUEST, DONATION_DELETE_SUCCESS, DONATION_DELETE_FAIL,
 
 } from "../constants/donationConstants";
@@ -116,6 +117,8 @@ export const donationCreateReducers = (state = {}, action) => {
             return {
                 loading: false, error: action.payload,
             };
+        case DONATION_CREATE_RESET:
+            return {};
         default:
             return state;
     }

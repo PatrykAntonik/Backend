@@ -2,8 +2,10 @@ services:
   db:
     image: postgres:16.9-alpine
     container_name: transplant-db
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: transplant_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
@@ -26,10 +28,12 @@ services:
       - "8000:8080"
     image: transplant-api-image
     container_name: transplant-api
-    env_file:
-      - .env
     environment:
-      DB_HOST: db
+      - POSTGRES_DB=transplant_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - DB_HOST=db
+      - DEBUG=true
     depends_on:
       - db
   web:
@@ -46,8 +50,8 @@ services:
       - "3000:8080"
     image: transplant-web-image
     container_name: transplant-web
-    env_file:
-      - ./frontend/.env
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL:-http://localhost:8000}
     depends_on:
       api:
         condition: service_healthy
