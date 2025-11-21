@@ -4,6 +4,10 @@ services:
     container_name: transplant-db
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: transplant_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
@@ -29,7 +33,11 @@ services:
     env_file:
       - .env
     environment:
-      DB_HOST: db
+      - POSTGRES_DB=transplant_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - DB_HOST=db
+      - DEBUG=true
     depends_on:
       - db
   web:
