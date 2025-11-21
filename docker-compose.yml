@@ -35,9 +35,10 @@ services:
   web:
     build:
       context: ./frontend
-      target: runner
+      target: dev-runner
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8000}
+    command: npm start
     volumes:
       - ./frontend:/app
       - /app/node_modules
