@@ -54,6 +54,10 @@ function UserInfo() {
     const isHospital = user.is_hospital;
 
     useEffect(() => {
+        document.title = 'My Account | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         if (!user || userInfo.id !== user.id || success) {
             dispatch({type: USER_UPDATE_PROFILE_RESET});
             dispatch(getUserDetails('profile'));
@@ -171,7 +175,7 @@ function UserInfo() {
                         padding: 5
                     }}
                 >
-                    <Typography variant="h5">
+                    <Typography component="h1" variant="h5">
                         Update Profile
                     </Typography>
                     <Box onSubmit={submitHandler} component="form" sx={{mt: 3}}>
@@ -304,7 +308,7 @@ function UserInfo() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus value={email}
+                                    value={email}
                                     onChange={(e) => {
                                         setEmail(e.target.value);
                                         validateEmail(e.target.value);

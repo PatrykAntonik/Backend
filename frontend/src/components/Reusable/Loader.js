@@ -5,9 +5,9 @@ import Typography from "@mui/material/Typography";
 
 function Loader() {
     return (
-        <Box sx={{textAlign:"center"}} mb={10} mt={10}>
-            <Typography variant="h4">Loading</Typography>
-            <CircularProgress size={100}/>
+        <Box role="status" aria-live="polite" sx={{textAlign:"center"}} mb={10} mt={10}>
+            <Typography component="p" variant="h4">Loading</Typography>
+            <CircularProgress size={100} aria-label="Loading, please wait"/>
         </Box>
     );
 

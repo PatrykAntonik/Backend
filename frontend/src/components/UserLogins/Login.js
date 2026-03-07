@@ -22,6 +22,8 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import {useNavigate} from 'react-router-dom';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 
 function Login() {
@@ -31,12 +33,17 @@ function Login() {
     const [password, setPassword] = useState("");
     const userLogin = useSelector(state => state.userLogin);
     const {loading, error, userInfo} = userLogin;
-    const [message, setMessage] = useState("");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    // T014: unique page title for screen reader navigation
+    useEffect(() => {
+        document.title = 'Login | TransplantApp';
+    }, []);
 
     useEffect(() => {
         let timer;
         if (userInfo) {
-            setMessage('Login Successful');
+            setSnackbarOpen(true);
             timer = setTimeout(() => {
                 navigate('/account');
             }, 2000);
@@ -59,8 +66,15 @@ function Login() {
     return (
         <Box>
             {loading && <Loader/>}
-            {message && <Message severity="success">{message}</Message>}
             {error && <Message severity="error">{error}</Message>}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+            >
+                <Alert severity="success" variant="filled">Login Successful</Alert>
+            </Snackbar>
             <Container maxWidth="xs">
                 <CssBaseline/>
                 <Box
@@ -87,26 +101,19 @@ function Login() {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            autoFocus value={email} onChange={(e) => setEmail(e.target.value)}
+                            value={email} onChange={(e) => setEmail(e.target.value)}
                         />
-                        {/*<TextField*/}
-                        {/*    margin="normal"*/}
-                        {/*    required*/}
-                        {/*    fullWidth*/}
-                        {/*    name="password"*/}
-                        {/*    label="Password"*/}
-                        {/*    type="password" id="password"*/}
-                        {/*    autoComplete="current-password" value={password}*/}
-                        {/*    onChange={(e) => setPassword(e.target.value)}*/}
-                        {/*/>*/}
+                        {/* T013: added id="password" to OutlinedInput and htmlFor="password" to InputLabel
+                            so the label is programmatically associated with the input */}
                         <FormControl
                             margin="normal"
                             fullWidth
                             required
                             onChange={(e) => setPassword(e.target.value)}
                         >
-                            <InputLabel>Password</InputLabel>
+                            <InputLabel htmlFor="password">Password</InputLabel>
                             <OutlinedInput
+                                id="password"
                                 type={showPassword ? 'text' : 'password'}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -133,11 +140,10 @@ function Login() {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <RouterLink to={'/register'}>
-                                    <Link variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </RouterLink>
+                                {/* T011: fixed nested <a> — single MuiLink with component={RouterLink} */}
+                                <Link component={RouterLink} to={'/register'} variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>

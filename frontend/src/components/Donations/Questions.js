@@ -22,6 +22,10 @@ function Questions() {
     const [donationType, setDonationType] = useState(0);
 
     useEffect(() => {
+        document.title = 'Donation Questions | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         dispatch(ListQuestion(donationType === 0 ? 'blood' : 'marrow'));
     }, [dispatch, donationType]);
 
@@ -31,7 +35,7 @@ function Questions() {
 
     return (
         <Box>
-            <Typography variant="h4" component="h2" sx={{marginBottom: "1rem", marginTop: "1rem"}}>
+            <Typography variant="h4" component="h1" sx={{marginBottom: "1rem", marginTop: "1rem"}}>
                 Questions for Donations
             </Typography>
 

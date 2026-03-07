@@ -56,6 +56,10 @@ function DonationDetail() {
     );
 
     useEffect(() => {
+        document.title = 'Donation Detail | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         dispatch(listDonationDetails(id));
         dispatch(listDonationResponses(id));
     }, [id, dispatch]);
@@ -77,7 +81,7 @@ function DonationDetail() {
         <Box mb={20} sx={{flexGrow: 1, margin: 4}}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
-                    <Typography variant="h6">Donor Information</Typography>
+                    <Typography component="h1" variant="h6">Donor Information</Typography>
                     <List sx={{backgroundColor: 'custom.baseWhite', color: 'black', borderRadius: 5}}>
                         <ListItem>
                             <StyledListItemText primary="First Name" secondary={donation.donor?.first_name || 'N/A'}/>
@@ -133,8 +137,7 @@ function DonationDetail() {
                 </Grid>
 
                 <Grid item xs={12} md={8}>
-                    <Typography variant="h6"
-                    >Questions with responses</Typography>
+                    <Typography component="h2" variant="h6">Questions with responses</Typography>
                     <List sx={{backgroundColor: 'custom.baseWhite', color: 'black', borderRadius: 5}}>
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
@@ -151,7 +154,7 @@ function DonationDetail() {
                                             }
                                         />
                                     </ListItem>
-                                    {<Divider/>}
+                                    <Divider component="li"/>
                                 </React.Fragment>
                             ))
                         ) : (

@@ -49,6 +49,10 @@ function DonationCreateScreen() {
     const {loading, error, success} = donationCreate;
 
     useEffect(() => {
+        document.title = 'New Donation | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         if (donationType) {
             dispatch(ListQuestion(donationType));
         }
@@ -223,7 +227,7 @@ function DonationCreateScreen() {
                         width: '100%'
                     }}>
                         <Box>
-                            <Typography variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>
+                            <Typography component="p" variant="h6" sx={{textAlign: 'left', marginBottom: '1rem'}}>
                                 Donation Type: {donationType.toUpperCase()}
                             </Typography>
                             <Accordion

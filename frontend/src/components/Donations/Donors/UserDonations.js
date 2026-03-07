@@ -17,6 +17,10 @@ function UserDonations() {
     const {loading: loadingDonations, error: errorDonations, donations} = donationListMy;
 
     useEffect(() => {
+        document.title = 'My Donations | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         dispatch(listMyDonations());
     }, [dispatch]);
 
@@ -58,7 +62,7 @@ function UserDonations() {
                                     </Grid>
                                 </Grid>
                             </Paper>
-                        </Grid>))) : (<Typography variant="h6" component="h6">
+                        </Grid>))) : (<Typography variant="h6" component="p">
                         No donations
                     </Typography>)}
                 </Grid>}

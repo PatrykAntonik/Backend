@@ -17,9 +17,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from "../actions/userActions";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
@@ -29,7 +31,8 @@ import MenuItem from "@mui/material/MenuItem";
 
 const drawerWidth = 240;
 
-const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})(
+// Changed from styled('main') to styled('div') — the <main> landmark now lives in App.js
+const LayoutSpacer = styled('div', {shouldForwardProp: (prop) => prop !== 'open'})(
     ({theme, open}) => ({
         flexGrow: 1,
         padding: theme.spacing(3),
@@ -96,7 +99,9 @@ export default function PersistentDrawerLeft() {
     const {error, loading, user} = userDetails
     const isHospital = userInfo?.is_hospital;
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const firstDrawerItemRef = React.useRef(null);
+    const [logoutSnackbarOpen, setLogoutSnackbarOpen] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -107,7 +112,11 @@ export default function PersistentDrawerLeft() {
     };
 
     const logoutHandler = () => {
-        dispatch(logout());
+        setLogoutSnackbarOpen(true);
+        setTimeout(() => {
+            dispatch(logout());
+            navigate('/');
+        }, 1500);
     }
 
     const handleDrawerOpen = () => {
@@ -117,6 +126,13 @@ export default function PersistentDrawerLeft() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    // T010: move focus into drawer when it opens so keyboard users land inside it
+    React.useEffect(() => {
+        if (open && firstDrawerItemRef.current) {
+            firstDrawerItemRef.current.focus();
+        }
+    }, [open]);
 
     return (
         <Box sx={{display: 'flex'}}>
@@ -139,9 +155,10 @@ export default function PersistentDrawerLeft() {
                                     </IconButton>
                                 ) : (
                                     <>
+                                        {/* T009: corrected aria-label — opens a nav menu, not the user account */}
                                         <IconButton
                                             size="large"
-                                            aria-label="account of current user"
+                                            aria-label="open navigation menu"
                                             aria-controls="menu-appbar"
                                             aria-haspopup="true"
                                             onClick={handleOpenNavMenu}
@@ -210,6 +227,7 @@ export default function PersistentDrawerLeft() {
                                 }}
                             />
                             <Typography
+                                component="span"
                                 variant="h6"
                                 noWrap
                                 sx={{
@@ -221,8 +239,13 @@ export default function PersistentDrawerLeft() {
                                 TransplantApp
                             </Typography>
                         </Box>
-                        <Box sx={{marginLeft: "2rem", flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
 
+                        {/* T006: nav landmark for desktop main navigation links */}
+                        <Box
+                            component="nav"
+                            aria-label="Main navigation"
+                            sx={{marginLeft: "2rem", flexGrow: 1, display: {xs: 'none', md: 'flex'}}}
+                        >
                             {userInfo && !isHospital ? (
                                 <>
                                     <Button
@@ -249,8 +272,6 @@ export default function PersistentDrawerLeft() {
                             {userInfo ? (
                                 <Button
                                     onClick={logoutHandler}
-                                    component={Link}
-                                    to={`/`}
                                     sx={{
                                         textDecoration: 'none',
                                         color: 'white',
@@ -297,60 +318,72 @@ export default function PersistentDrawerLeft() {
                 open={open}
             >
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
+                    {/* T008: aria-label for icon-only close button */}
+                    <IconButton onClick={handleDrawerClose} aria-label="close navigation drawer">
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
                 </DrawerHeader>
                 <Divider/>
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to={`/account`}>
-                            <ListItemIcon>
-                                <InboxIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Account'}/>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to={`/donation/`}>
-                            <ListItemIcon>
-                                <InboxIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'All Donations'}/>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to={`/users/`}>
-                            <ListItemIcon>
-                                <InboxIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Donors'}/>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to={`/questions/`}>
-                            <ListItemIcon>
-                                <InboxIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Donation questions'}/>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <Divider/>
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to={`/contact`}>
-                            <ListItemIcon>
-                                <InboxIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary={'Contact'}/>
-                        </ListItemButton>
-                    </ListItem>
-                </List>
+                {/* T006: nav landmark for drawer navigation links */}
+                <nav aria-label="Drawer navigation">
+                    <List>
+                        <ListItem disablePadding>
+                            <ListItemButton component={Link} to={`/account`} ref={firstDrawerItemRef}>
+                                <ListItemIcon>
+                                    <InboxIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Account'}/>
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <ListItemButton component={Link} to={`/donation/`}>
+                                <ListItemIcon>
+                                    <InboxIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'All Donations'}/>
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <ListItemButton component={Link} to={`/users/`}>
+                                <ListItemIcon>
+                                    <InboxIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Donors'}/>
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <ListItemButton component={Link} to={`/questions/`}>
+                                <ListItemIcon>
+                                    <InboxIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Donation questions'}/>
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                    <Divider/>
+                    <List>
+                        <ListItem disablePadding>
+                            <ListItemButton component={Link} to={`/contact`}>
+                                <ListItemIcon>
+                                    <InboxIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Contact'}/>
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </nav>
             </Drawer>
-            <Main open={open}>
+            <LayoutSpacer open={open}>
                 <DrawerHeader/>
-            </Main>
+            </LayoutSpacer>
+            <Snackbar
+                open={logoutSnackbarOpen}
+                autoHideDuration={1500}
+                onClose={() => setLogoutSnackbarOpen(false)}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+            >
+                <Alert severity="info" variant="filled">Logged out successfully</Alert>
+            </Snackbar>
         </Box>
     )
         ;
