@@ -6,6 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import store from './store';
 
+if (process.env.NODE_ENV !== 'production') {
+    const axe = require('@axe-core/react');
+    const ReactDOMLegacy = require('react-dom');
+    axe(React, ReactDOMLegacy, 1000);
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>

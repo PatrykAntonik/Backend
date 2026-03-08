@@ -22,6 +22,10 @@ function Questions() {
     const [donationType, setDonationType] = useState(0);
 
     useEffect(() => {
+        document.title = 'Donation Questions | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         dispatch(ListQuestion(donationType === 0 ? 'blood' : 'marrow'));
     }, [dispatch, donationType]);
 
@@ -31,7 +35,7 @@ function Questions() {
 
     return (
         <Box>
-            <Typography variant="h4" component="h2" sx={{marginBottom: "1rem", marginTop: "1rem"}}>
+            <Typography variant="h4" component="h1" sx={{marginBottom: "1rem", marginTop: "1rem"}}>
                 Questions for Donations
             </Typography>
 
@@ -50,10 +54,10 @@ function Questions() {
                         {questions && questions.length > 0 ? (
                             questions.map((question, index) => (
                                 <React.Fragment key={index}>
-                                    <ListItem sx={{color: 'black', fontWeight: '800'}}>
+                                    <ListItem sx={{fontWeight: '800'}}>
                                         <ListItemButton>
                                             <ListItemIcon>
-                                                <QuestionMarkIcon size="large" sx={{color: 'black'}}/>
+                                                <QuestionMarkIcon size="large"/>
                                             </ListItemIcon>
                                             <ListItemText sx={{textAlign: 'left', marginLeft: '50px'}}
                                                           primary={`${question.text}`}/>
@@ -64,8 +68,7 @@ function Questions() {
                             ))
                         ) : (
                             <ListItem>
-                                <ListItemText sx={{color: 'black'}}
-                                              primary="No questions found for this donation type."/>
+                                <ListItemText primary="No questions found for this donation type."/>
                             </ListItem>
                         )}
                     </List>

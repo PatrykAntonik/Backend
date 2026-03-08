@@ -14,6 +14,10 @@ function DonationsList() {
     const {loading, error, donations} = donationList;
 
     useEffect(() => {
+        document.title = 'Donations List | TransplantApp';
+    }, []);
+
+    useEffect(() => {
         dispatch(listDonations());
     }, [dispatch]);
 
@@ -86,13 +90,12 @@ function DonationsList() {
                     },
                 }}>
                     <DataGrid
+                        aria-label="Donations list"
                         rows={donations}
                         sx={{
                             borderRadius: 5,
                             backgroundColor: 'custom.baseWhite',
-                            color: 'black',
                             fontSize: '1rem',
-                            borderColor: 'rgba(0,0,0,0.2)',
                         }}
                         columns={columns}
                         autoHeight

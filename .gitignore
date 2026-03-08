@@ -19,6 +19,7 @@ idea
 
 GEMINI.md
 AGENTS.md
+CLAUDE.md
 
 node_modules/
 
@@ -26,3 +27,10 @@ data.json
 
 .terraform/
 .terraform.lock.hcl
+
+*.pdf
+
+specs
+claude
+.specify
+build

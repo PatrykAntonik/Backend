@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Box, Typography, Button } from '@mui/material';
 
 function Contact() {
     const emailAddress = "patryka2000@gmail.com";
+
+    useEffect(() => {
+        document.title = 'Contact | TransplantApp';
+    }, []);
 
     const handleContactClick = () => {
         window.location.href = `mailto:${emailAddress}?subject=Suggestion for Donation Process`;
@@ -17,10 +21,10 @@ function Contact() {
             textAlign: 'left',
             p: 4,
         }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography component="h1" variant="h4" gutterBottom>
                 Have an idea to improve the donation process?
             </Typography>
-            <Typography variant="h6" sx={{ mb: 10, mt:4 }}>
+            <Typography component="p" variant="h6" sx={{ mb: 10, mt:4 }}>
                 If you have any ideas or feedback to make the donation process easier, like adding more questions for donors, please contact us.
             </Typography>
             <Button variant="contained" color="primary" onClick={handleContactClick}>

@@ -28,7 +28,7 @@ function Message({severity, variant, children}) {
                         </IconButton>
                     }
                 >
-                    <Typography variant="h4" sx={{textAlign: "center"}}>
+                    <Typography component="p" variant="h4" sx={{textAlign: "center"}}>
                         {children}
                     </Typography>
                 </Alert>

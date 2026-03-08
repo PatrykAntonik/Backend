@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {
     Box, Typography, Paper, Button, Accordion, AccordionSummary, AccordionDetails, CssBaseline
 } from '@mui/material';
@@ -7,24 +7,27 @@ import {Link} from "react-router-dom";
 import backgroundImage from '../static/background.webp';
 
 function HomePage() {
+    useEffect(() => {
+        document.title = 'Home | TransplantApp';
+    }, []);
 
     return (<CssBaseline>
             <Box sx={{my: 4, position: 'relative', zIndex: 1}}>
-                <Typography sx={{color: 'black', fontWeight: '500'}} variant="h2" component="h1" gutterBottom>
+                <Typography sx={{fontWeight: '500'}} variant="h2" component="h1" gutterBottom>
                     Blood and Marrow Donation
                 </Typography>
-                <Typography sx={{color: 'black'}} variant="h5" gutterBottom>
+                <Typography component="p" variant="h5" gutterBottom>
                     A Lifesaving Gesture
                 </Typography>
 
 
-                <Accordion sx={{mt: 3, backgroundColor: 'custom.baseWhite', color: 'black'}}>
+                <Accordion sx={{mt: 3, backgroundColor: 'custom.baseWhite'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                     >
-                        <Typography variant="h6">Why Donate Blood and Marrow?</Typography>
+                        <Typography component="h2" variant="h6">Why Donate Blood and Marrow?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography paragraph>
@@ -35,13 +38,13 @@ function HomePage() {
                     </AccordionDetails>
                 </Accordion>
 
-                <Accordion sx={{backgroundColor: 'custom.baseWhite', color: 'black'}}>
+                <Accordion sx={{backgroundColor: 'custom.baseWhite'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                     >
-                        <Typography variant="h6">How to Become a donor with our website?</Typography>
+                        <Typography component="h2" variant="h6">How to Become a donor with our website?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography paragraph>
@@ -62,9 +65,9 @@ function HomePage() {
                 </Accordion>
 
                 <Paper elevation={3}
-                       sx={{p: 3, mt: 10, backgroundColor: 'custom.baseWhite', color: 'black', textAlign: 'center'}}
+                       sx={{p: 3, mt: 10, backgroundColor: 'custom.baseWhite', textAlign: 'center'}}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography component="h2" variant="h6" gutterBottom>
                         Donation Questions
                     </Typography>
                     <Typography paragraph>

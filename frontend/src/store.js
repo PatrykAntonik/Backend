@@ -17,6 +17,7 @@ import {
     userUpdateProfileReducers,
     userListReducers,
 } from "./reducers/userReducers";
+import { themeReducer } from "./reducers/themeReducer";
 
 const reducer = combineReducers({
     donationList: donationListReducers,
@@ -31,15 +32,25 @@ const reducer = combineReducers({
     userList: userListReducers,
     donationCreate: donationCreateReducers,
     donationDelete: donationDeleteReducer,
+    theme: themeReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo") ?
     JSON.parse(localStorage.getItem("userInfo")) :
     null;
 
+const VALID_THEMES = ['light', 'dark', 'high-contrast'];
+
+const themeFromStorage = (() => {
+    const stored = localStorage.getItem('transplantapp-theme');
+    if (VALID_THEMES.includes(stored)) return stored;
+    // No stored preference — respect OS-level appearance setting
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+})();
+
 const initialState = {
     userLogin: {userInfo: userInfoFromStorage},
-
+    theme: {activeTheme: themeFromStorage},
 };
 
 const middleware = [thunk];

@@ -37,6 +37,11 @@ function Register() {
     const userRegister = useSelector(state => state.userRegister);
     const {loading, error, userInfo} = userRegister;
     const isLogged = useSelector(state => state.userLogin.userInfo);
+
+    // T015: unique page title for screen reader navigation
+    useEffect(() => {
+        document.title = 'Register | TransplantApp';
+    }, []);
     const navigate = useNavigate();
 
 
@@ -153,7 +158,7 @@ function Register() {
                             {is_hospital ? "H" : "U"}
                         </Avatar>
                     </CustomTooltip>
-                    <Typography variant="h5">
+                    <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
 
@@ -170,6 +175,7 @@ function Register() {
                                       flexDirection: 'row'
                                   }}>
                                 <Typography
+                                    component="p"
                                     variant="h6"
                                 >
                                     Check for hospital registration
@@ -181,11 +187,13 @@ function Register() {
 
                             </Grid>
                             <Grid item xs={12} sm={6} sx={{textAlign: 'center'}}>
+                                {/* T025: inputProps aria-label so the Switch has a programmatic accessible name */}
                                 <Switch
                                     checked={is_hospital}
                                     onChange={handleChange}
                                     color="info"
                                     defaultChecked
+                                    inputProps={{'aria-label': 'Register as hospital'}}
                                 />
                             </Grid>
 
@@ -200,7 +208,7 @@ function Register() {
                                             label="Hospital Name"
                                             name="hospital_name"
                                             autoComplete="hospital_name"
-                                            autoFocus value={hospital_name}
+                                            value={hospital_name}
                                             onChange={(e) => setHospitalName(e.target.value)}
                                         />
                                     </Grid>
@@ -237,7 +245,6 @@ function Register() {
                                             autoComplete="first_name"
                                             value={firstName}
                                             onChange={(e) => setFirstName(e.target.value)}
-                                            autoFocus
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -360,11 +367,10 @@ function Register() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <RouterLink to={'/login'}>
-                                    <Link variant="body2">
-                                        {"Already have an account? Sign in"}
-                                    </Link>
-                                </RouterLink>
+                                {/* T012: fixed nested <a> — single MuiLink with component={RouterLink} */}
+                                <Link component={RouterLink} to={'/login'} variant="body2">
+                                    {"Already have an account? Sign in"}
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
