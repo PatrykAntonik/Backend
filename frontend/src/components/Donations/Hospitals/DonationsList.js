@@ -95,9 +95,7 @@ function DonationsList() {
                         sx={{
                             borderRadius: 5,
                             backgroundColor: 'custom.baseWhite',
-                            color: 'black',
                             fontSize: '1rem',
-                            borderColor: 'rgba(0,0,0,0.2)',
                         }}
                         columns={columns}
                         autoHeight

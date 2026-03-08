@@ -13,15 +13,15 @@ function HomePage() {
 
     return (<CssBaseline>
             <Box sx={{my: 4, position: 'relative', zIndex: 1}}>
-                <Typography sx={{color: 'black', fontWeight: '500'}} variant="h2" component="h1" gutterBottom>
+                <Typography sx={{fontWeight: '500'}} variant="h2" component="h1" gutterBottom>
                     Blood and Marrow Donation
                 </Typography>
-                <Typography sx={{color: 'black'}} component="p" variant="h5" gutterBottom>
+                <Typography component="p" variant="h5" gutterBottom>
                     A Lifesaving Gesture
                 </Typography>
 
 
-                <Accordion sx={{mt: 3, backgroundColor: 'custom.baseWhite', color: 'black'}}>
+                <Accordion sx={{mt: 3, backgroundColor: 'custom.baseWhite'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel1a-content"
@@ -38,7 +38,7 @@ function HomePage() {
                     </AccordionDetails>
                 </Accordion>
 
-                <Accordion sx={{backgroundColor: 'custom.baseWhite', color: 'black'}}>
+                <Accordion sx={{backgroundColor: 'custom.baseWhite'}}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon/>}
                         aria-controls="panel2a-content"
@@ -65,7 +65,7 @@ function HomePage() {
                 </Accordion>
 
                 <Paper elevation={3}
-                       sx={{p: 3, mt: 10, backgroundColor: 'custom.baseWhite', color: 'black', textAlign: 'center'}}
+                       sx={{p: 3, mt: 10, backgroundColor: 'custom.baseWhite', textAlign: 'center'}}
                 >
                     <Typography component="h2" variant="h6" gutterBottom>
                         Donation Questions

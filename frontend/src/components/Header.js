@@ -28,6 +28,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import ThemeToggleButton from "./ThemeToggleButton";
 
 const drawerWidth = 240;
 
@@ -251,14 +252,14 @@ export default function PersistentDrawerLeft() {
                                     <Button
                                         component={Link}
                                         to={`/account`}
-                                        sx={{my: 2, color: 'white', display: 'block'}}
+                                        sx={{my: 2, color: 'inherit', display: 'block'}}
                                     >
                                         Account
                                     </Button>
                                     <Button
                                         component={Link}
                                         to={`/donation/mydonations`}
-                                        sx={{my: 2, color: 'white', display: 'block'}}
+                                        sx={{my: 2, color: 'inherit', display: 'block'}}
                                     >
                                         Donations
                                     </Button>
@@ -268,14 +269,15 @@ export default function PersistentDrawerLeft() {
                                 <Box/>
                             )}
                         </Box>
-                        <Box sx={{flexGrow: 0, marginRight: {xs: '0', md: 5},}}>
+                        <Box sx={{flexGrow: 0, marginRight: {xs: '0', md: 5}, display: 'flex', alignItems: 'center', gap: 1}}>
+                            <ThemeToggleButton/>
                             {userInfo ? (
                                 <Button
                                     onClick={logoutHandler}
                                     sx={{
                                         textDecoration: 'none',
-                                        color: 'white',
-                                        border: '2px solid white',
+                                        color: 'inherit',
+                                        border: '2px solid currentColor',
                                         width: "7rem",
                                     }}
                                     variant="outlined"
@@ -289,8 +291,8 @@ export default function PersistentDrawerLeft() {
                                     to={`/login`}
                                     sx={{
                                         textDecoration: 'none',
-                                        color: 'white',
-                                        border: '2px solid white',
+                                        color: 'inherit',
+                                        border: '2px solid currentColor',
                                         width: "7rem",
                                     }}
                                     variant="outlined"

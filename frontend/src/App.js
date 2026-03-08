@@ -16,7 +16,8 @@ import CreateDonation from "./components/Donations/Donors/CreateDonation";
 import Contact from "./components/Contact";
 import backgroundImage from './static/background.webp';
 import {ThemeProvider} from '@mui/material/styles';
-import theme from './theme';
+import {getTheme} from './theme';
+import {useSelector} from 'react-redux';
 
 function AppContent() {
     const location = useLocation();
@@ -84,6 +85,8 @@ function AppContent() {
 }
 
 function App() {
+    const activeTheme = useSelector((state) => state.theme.activeTheme);
+
     useEffect(() => {
         document.body.style.backgroundImage = `url('${backgroundImage}')`;
         document.body.style.backgroundSize = 'cover';
@@ -96,7 +99,7 @@ function App() {
         };
     }, []);
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={getTheme(activeTheme)}>
             <HashRouter>
                 <AppContent/>
             </HashRouter>

@@ -34,7 +34,7 @@ function UserDonations() {
                 <Grid container spacing={2} sx={{marginTop: '2rem'}}>
                     {donations && donations.length > 0 ? (donations.map((donation) => (
                         <Grid item xs={12} key={donation.id}>
-                            <Paper elevation={3} sx={{padding: 2, backgroundColor: 'custom.baseWhite', color: 'black'}}>
+                            <Paper elevation={3} sx={{padding: 2, backgroundColor: 'custom.baseWhite'}}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={2} md={3}>
                                         <BloodtypeOutlinedIcon color="error"/>
