@@ -28,16 +28,6 @@ variable "service_account_roles" {
   description = "IAM roles granted to the shared Cloud Run service account"
 }
 
-variable "database_url_secret_id" {
-  type        = string
-  description = "Secret Manager ID that stores the database URL"
-}
-
-variable "django_secret_key_secret_id" {
-  type        = string
-  description = "Secret Manager ID that stores the Django SECRET_KEY"
-}
-
 variable "api_service_name" {
   type        = string
   description = "Cloud Run service name for the API"

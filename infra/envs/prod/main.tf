@@ -25,16 +25,6 @@ module "service_account" {
   roles        = var.service_account_roles
 }
 
-module "database_url_secret" {
-  source    = "../../modules/secret_manager"
-  secret_id = var.database_url_secret_id
-}
-
-module "django_secret_key" {
-  source    = "../../modules/secret_manager"
-  secret_id = var.django_secret_key_secret_id
-}
-
 module "transplant_api" {
   source                = "../../modules/cloud_run"
   service_name          = var.api_service_name
