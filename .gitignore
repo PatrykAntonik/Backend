@@ -30,6 +30,6 @@ data.json
 *.pdf
 
 specs
-claude
+.claude
 .specify
 build
